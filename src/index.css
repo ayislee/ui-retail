@@ -21,3 +21,63 @@ code {
 .css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
 	position: fixed !important;
 }
+
+
+.container-2-column {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	
+	padding:  10px;
+	grid-row-gap: 20px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+	
+
+}
+
+.item > img {
+	width: 100%;
+	border-radius: 3%;
+}
+
+.page-title {
+	padding: 20px;
+	font-size: 1.5rem;
+	font-weight: bold;
+
+}
+
+.item-title {
+	font-weight: bold;
+}
+
+.item-desc {
+	font-size: 0.8rem;
+}
+
+.item-product {
+	font-weight: normal;
+}
+.price {
+	display: flex
+}
+.item-price {
+	font-weight: bold;
+}
+
+.item-price-discount {
+	font-weight: normal;
+	text-decoration: line-through;
+	padding-left: 1rem;
+}
+.btn-cart {
+	margin-bottom: 1rem !important;
+}
+
+.item-outlet {
+	font-size: .8rem;
+	font-style: italic;
+}
