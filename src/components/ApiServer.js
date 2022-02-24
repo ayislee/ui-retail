@@ -31,8 +31,7 @@ export const ApiReq = async (params,pub=true) => {
 
 			case 'get':
 				response =  await axios.get(params.url,config)
-				console.log(response)
-				return response
+				return response.data
 				break;
 
 			

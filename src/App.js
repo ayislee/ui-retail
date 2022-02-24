@@ -93,8 +93,8 @@ export default function App() {
 	// const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [title,setTitle] = useState('HOME')
-
 	const [cart,setCart] = useState([])
+
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
 

@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import {RetailData} from '../components/LocalStorage';
+import {Api} from '../components/Api';
+import {ApiReq} from '../components/ApiServer';
 
 const outlets = [
 	{
@@ -50,6 +53,24 @@ const outlets = [
 	}
 ]
 export default function Outlet() {
+
+	const retail_data = RetailData()
+	const reloadContent = async () => {
+		const params = {
+			url: Api.COMPANY.url.replace(":company_slug",retail_data.company),
+			method: Api.COMPANY.method,
+			reqBody: retail_data
+		}
+		const response = await ApiReq(params)
+		if(response.success){
+			console.log('response',response)
+			
+		}
+	}
+
+	useEffect(()=>{
+		reloadContent()
+	},[])
   	return (
 		<React.Fragment>
 			{/* <div className="page-title">Outlet</div> */}

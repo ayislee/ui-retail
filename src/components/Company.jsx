@@ -15,6 +15,6 @@ export default function Company() {
 	const data = ls.get("retail_data")
 	// console.log("data",data)
 	return (
-		<Navigate to="/menu" replace={true} />
+		<Navigate to="/menus" replace={true} />
 		)
 	}

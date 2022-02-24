@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import {useParams} from 'react-router-dom'
 import ImageGallery from 'react-image-gallery';
 import Tabs from '@mui/material/Tabs';
@@ -18,128 +18,72 @@ import {ApiReq} from '../components/ApiServer'
 
 
 
-const categories = [
-	{
-		category_id: "1",
-		category: "Europan Bread"
-	},
-	{
-		category_id: "2",
-		category: "Sweet Bread"
-	},
-	{
-		category_id: "3",
-		category: "Cookies & Cake"
-	},{
-		category_id: "1",
-		category: "Baverages"
-	}
-]
-const products = [
-	{
-		product_id:1,
-		product: 'product satu',
-		desc: "Keterangan produk",
-		regular_price: 20000,
-        discount_price: 10000,
-		product_images: [
-			{
-			  	path: 'https://picsum.photos/id/1018/1000/600/',
-			  
-			},
-			{
-				path: 'https://picsum.photos/id/1015/1000/600/',
-			},
-			{
-				path: 'https://picsum.photos/id/1019/1000/600/',
-			},
-		]
-	},
-	{
-		product_id:2,
-		product: 'product dua',
-		desc: "Keterangan produk",
-		regular_price: 15000,
-        discount_price: null,
-		product_images: [
-			{
-			  	path: 'https://picsum.photos/id/1018/1000/600/',
-			  
-			},
-			{
-				path: 'https://picsum.photos/id/1015/1000/600/',
-			},
-			{
-				path: 'https://picsum.photos/id/1019/1000/600/',
-			},
-		]
-	},
-	{
-		product_id:2,
-		product: 'product dua',
-		desc: "Keterangan produk",
-		regular_price: 15000,
-        discount_price: null,
-		product_images: [
-			{
-			  	path: 'https://picsum.photos/id/1018/1000/600/',
-			  
-			},
-			{
-				path: 'https://picsum.photos/id/1015/1000/600/',
-			},
-			{
-				path: 'https://picsum.photos/id/1019/1000/600/',
-			},
-		]
-	},
-	{
-		product_id:2,
-		product: 'product dua',
-		desc: "Keterangan produk",
-		regular_price: 15000,
-        discount_price: null,
-		product_images: [
-			{
-			  	path: 'https://picsum.photos/id/1018/1000/600/',
-			  
-			},
-			{
-				path: 'https://picsum.photos/id/1015/1000/600/',
-			},
-			{
-				path: 'https://picsum.photos/id/1019/1000/600/',
-			},
-		]
-	}
-]
+
+
 export default function Menu() {
 	const {companySlack,outletSlack} = useParams()
 	const [value, setValue] = React.useState(0);
+
+	const [menu,setMenu] = useState([])
+	const [store,setStore] = useState(null)
+	const [categories,setCategory] = useState([])
+	const [products,setProduct] = useState([])
 
   	const handleChange = (event, newValue) => {
     	setValue(newValue);
   	};
 	const retail_data = RetailData()
-	console.log('test',retail_data.outlet)
 	
-	console.log(products.find(x=>x.product_id===1))
 	const handleTab = (text) => {
-		console.log('tab click',text)
+
 	}
 
-	useEffect(async ()=>{
 
+	const reloadContent = async () => {
 		const params = {
 			url: Api.STORE.url.replace(":store_slug",retail_data.outlet),
 			method: Api.STORE.method,
 			reqBody: retail_data
 		}
-		console.log('retail_data.outlet',retail_data.outlet)
-		console.log('params.url',params.url)
+		// console.log('retail_data.outlet',retail_data.outlet)
+		// console.log('params.url',params.url)
 		const response = await ApiReq(params)
-		console.log(response)
+		if(response.success){
+			setMenu(response.data.menu)
+			
+		}
+	}
+
+	useEffect(()=>{
+		reloadContent()
+		
 	},[])
+
+	useEffect(()=>{
+		console.log('menu',menu)
+		setCategory(Object.keys(menu))
+	},[menu])
+
+	useEffect(() => {
+		console.log('categories',categories)
+		if(categories.length > 0 ){
+			setProduct(menu[categories[value]])
+		}
+		
+	},[categories])
+
+	useEffect(() => {
+		console.log('value',value)
+		// setProduct(menu[categories[value]])
+		if(categories.length > 0 ){
+			setProduct(menu[categories[value]])
+		}
+		
+	},[value])
+
+	useEffect(() => {
+		console.log('product',products)
+	},[products])
 
 	return (
 
@@ -155,7 +99,7 @@ export default function Menu() {
 			>
 				{
 					categories.map((category,index)=>(
-						<Tab label={category.category} key={index} onClick={()=>handleTab(category.category)}/>
+						<Tab label={category} key={index} onClick={()=>handleTab(category)}/>
 					))
 				}
 				
@@ -165,10 +109,10 @@ export default function Menu() {
 				{
 					products.map((product,index)=>(
 						<div className="item" key={index}>
-							<img src={product.product_images[0].path} alt="" />
-							<div className="item-product">{product.product}</div>
+							<img src={product.item_image[0]} alt="" />
+							<div className="item-product">{product.item_name}</div>
 							<div className="item-outlet">{retail_data.outlet}</div>
-							<div className="item-desc">{product.desc}</div>
+							<div className="item-desc">{product.item_description}</div>
 							<div className="price">
 								<div className="item-price">Rp. {product.discount_price?product.discount_price:product.regular_price}</div>
 								{product.discount_price?(
