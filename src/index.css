@@ -38,6 +38,12 @@ code {
 
 }
 
+.square-img {
+	position: relative;
+	width: 100%;
+	
+	padding-top: 100%;
+}
 .item > img {
 	width: 100%;
 	border-radius: 3%;
@@ -88,4 +94,22 @@ code {
 .item-outlet {
 	font-size: .8rem;
 	font-style: italic;
+}
+
+.cart-container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	
+	padding:  10px;
+	grid-row-gap: 20px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+}
+
+.cart-image > img {
+	width: 100%;
+	border-radius: 3%;
 }

@@ -7,6 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import LiquorIcon from '@mui/icons-material/Liquor';
+import Badge from '@mui/material/Badge';
 import { 
 	Button, 
 	AppBar,
@@ -32,13 +33,15 @@ import {
 	Home 
 } from "@mui/icons-material";
 
+import {InitCart,GetBadge} from './components/LocalStorage'
+
 import "./App.css";
 
 
 export const MainContext = createContext();
 
 const initialState = {
-	company_slack: '',
+	badge: GetBadge(),
 	outlet_slack: '',
 };  
 
@@ -57,7 +60,15 @@ const reducer = (state, action) => {
 				isAuth: false,
 				authUser: null,
 			};
-
+		case "BADGE":
+			var cbadge = 0
+			for (const iterator of action.payload) {
+				cbadge = parseInt(cbadge) + parseInt(iterator.quantity)
+			}
+			return {
+				...state,
+				badge: cbadge,
+			};
 		default:
 			return state;
 	}
@@ -87,13 +98,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function App() {
-	
-	
-	
 	// const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [title,setTitle] = useState('HOME')
-	const [cart,setCart] = useState([])
+	const [cart,setCart] = useState(InitCart())
+	const [badge,setBudge] = useState(0)
 
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -103,8 +112,15 @@ export default function App() {
 	}
 	
 	useEffect(() => {
-		console.log('env',process.env.REACT_APP_API_PUBLIC_URL)
+		console.log('cart',cart)
+		console.log('state.badge',state.badge)
 	}, [])
+
+	useEffect(() => {
+		console.log('state',state)
+		
+	}, [state])
+
 	
 	const handleSideItem = (title) => {
 		setOpen(false)
@@ -155,16 +171,38 @@ export default function App() {
 							</IconButton>
 							<Typography component="div" sx={{ flexGrow: 1 }}>{title.toUpperCase()} </Typography>
 							<div>
-								<IconButton
-									size="large"
-									aria-label="account of current user"
-									aria-controls="menu-appbar"
-									aria-haspopup="true"
-									color="inherit"
-									sx={{ mr: 2 }}
-								>
-								<ShoppingCartIcon />
-								</IconButton>
+								{
+								state.badge>0?(
+									
+										<IconButton
+											size="large"
+											aria-label="account of current user"
+											aria-controls="menu-appbar"
+											aria-haspopup="true"
+											color="inherit"
+											sx={{ mr: 2 }}
+										>
+											<Badge badgeContent={state.badge} color="primary">
+												<ShoppingCartIcon />
+											</Badge>
+											
+										</IconButton>
+									
+								):(
+									<IconButton
+										size="large"
+										aria-label="account of current user"
+										aria-controls="menu-appbar"
+										aria-haspopup="true"
+										color="inherit"
+										sx={{ mr: 2 }}
+									>
+								
+										<ShoppingCartIcon />
+									</IconButton>
+									)
+								}
+								
 							</div>
 						</Toolbar>
 					</AppBar>

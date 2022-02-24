@@ -4,56 +4,11 @@ import Stack from '@mui/material/Stack';
 import {RetailData} from '../components/LocalStorage';
 import {Api} from '../components/Api';
 import {ApiReq} from '../components/ApiServer';
+import {Link} from 'react-router-dom'
 
-const outlets = [
-	{
-		outlet: "Grogol",
-		address: "Jalan balashkjahskh sdhskds d asbnd",
-		images : [
-			{
-				path: "https://picsum.photos/200/200"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			}
-		]
-	},
-	{
-		outlet: "Kota Tua",
-		address: "Jalan balashkjahskh sdhskds d asbnd",
-		images : [
-			{
-				path: "https://picsum.photos/200/200"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			}
-		]
-	},
-	{
-		outlet: "semanggi",
-		address: "Jalan balashkjahskh sdhskds d asbnd",
-		images : [
-			{
-				path: "https://picsum.photos/200/200"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			},
-			{
-				path: "https://picsum.photos/id/1018/1000/600/"
-			}
-		]
-	}
-]
+
 export default function Outlet() {
-
+	const [stores,setStore] = useState([])
 	const retail_data = RetailData()
 	const reloadContent = async () => {
 		const params = {
@@ -63,25 +18,33 @@ export default function Outlet() {
 		}
 		const response = await ApiReq(params)
 		if(response.success){
-			console.log('response',response)
-			
+			setStore(response.data)
 		}
 	}
 
 	useEffect(()=>{
 		reloadContent()
 	},[])
+
+	useEffect(() => {
+		console.log('store',stores)
+	},[stores])
+
   	return (
 		<React.Fragment>
 			{/* <div className="page-title">Outlet</div> */}
 			<div className="container-2-column">
 				{
-					outlets.map((outlet,index)=>(
-						<div className="item" key={index}>
-							<img src={outlet.images[0].path} alt="" />
-							<div className="item-title">{outlet.outlet}</div>
-							<div className="item-desc">{outlet.address}</div>
+					stores.map((store,index)=>(
+						<Link to={`/company/${retail_data.company}/${store.store_slug}`} key={index} style={{textDecoration:"none",color:"black"}}>
+							<div className="item">
+							<img src={store.store_image[0]} alt="" />
+							
+							<div className="item-title">{store.store_name}</div>
+							<div className="item-desc">{store.store_address}</div>
 						</div>
+						</Link>
+						
 					))
 				}
 			</div>

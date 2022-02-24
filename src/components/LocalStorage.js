@@ -23,9 +23,51 @@ export function RetailData() {
 }
 
 export function InitCart() {
-	const data = ls.get("cart_data")
+	let data = ls.get("cart_data")
 	if(!data){
 		const cart = []
+		ls.set("cart_data", JSON.stringify(cart))
+		data = ls.get("cart_data")
 	}
+	const storage = JSON.parse(data);	
 
+	return storage
+
+}
+
+export function UpdateCart(updateCart) {
+	ls.set("cart_data", JSON.stringify(updateCart))
+	const data = ls.get("cart_data")
+	const storage = JSON.parse(data);	
+	return storage
+}
+
+export function ClearCart(){
+	console.log('clear')
+	ls.remove('cart_data')
+	
+}
+
+export function GetBadge(){
+	
+	let data =ls.get("cart_data")
+	console.log('badge',data)
+	
+	if(!data){
+		const cart = []
+		ls.set("cart_data", JSON.stringify(cart))
+		data = ls.get("cart_data")
+	}else{
+		data = JSON.parse(data);
+	}
+	
+
+	console.log('data**',data)
+	var cbadge = 0
+	console.log('cbadge',cbadge)
+	for (const iterator of data) {
+		cbadge = parseInt(cbadge) + parseInt(iterator.quantity)
+	}
+	console.log('cbadge',cbadge)
+	return cbadge
 }

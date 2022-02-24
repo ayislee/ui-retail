@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState,useContext} from 'react';
 import {useParams} from 'react-router-dom'
 import ImageGallery from 'react-image-gallery';
 import Tabs from '@mui/material/Tabs';
@@ -10,10 +10,11 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 
-import {RetailData} from '../components/LocalStorage'
+import {RetailData,InitCart,UpdateCart,ClearCart} from '../components/LocalStorage'
 import axios from 'axios'
 import {Api} from '../components/Api'
 import {ApiReq} from '../components/ApiServer'
+import { MainContext } from "../App";
 
 
 
@@ -21,6 +22,7 @@ import {ApiReq} from '../components/ApiServer'
 
 
 export default function Menu() {
+	const { state, dispatch } = useContext(MainContext);
 	const {companySlack,outletSlack} = useParams()
 	const [value, setValue] = React.useState(0);
 
@@ -57,15 +59,16 @@ export default function Menu() {
 	useEffect(()=>{
 		reloadContent()
 		
+		
 	},[])
 
 	useEffect(()=>{
-		console.log('menu',menu)
+		// console.log('menu',menu)
 		setCategory(Object.keys(menu))
 	},[menu])
 
 	useEffect(() => {
-		console.log('categories',categories)
+		// console.log('categories',categories)
 		if(categories.length > 0 ){
 			setProduct(menu[categories[value]])
 		}
@@ -73,7 +76,7 @@ export default function Menu() {
 	},[categories])
 
 	useEffect(() => {
-		console.log('value',value)
+		// console.log('value',value)
 		// setProduct(menu[categories[value]])
 		if(categories.length > 0 ){
 			setProduct(menu[categories[value]])
@@ -82,8 +85,32 @@ export default function Menu() {
 	},[value])
 
 	useEffect(() => {
-		console.log('product',products)
+		// console.log('product',products)
 	},[products])
+
+	const handleAddCart = (p) => {
+		var lastCart = InitCart()
+		console.log('lastCart1',lastCart)
+		const indexItem = lastCart.findIndex(x => x.item_id == p.item_id)
+		if(indexItem>=0){
+			lastCart[indexItem].quantity++
+		}else{
+			p.quantity = 1
+			lastCart.push(p)
+		}
+
+		lastCart = UpdateCart(lastCart)
+
+		console.log('lastCart2',lastCart)
+
+		dispatch({
+			type: "BADGE",
+			payload: lastCart,
+		});
+		
+		
+		
+	}
 
 	return (
 
@@ -125,6 +152,7 @@ export default function Menu() {
 								startIcon={<AddShoppingCartIcon />}
 								fullWidth
 								sx={{marginBottom:"10px !important"}}
+								onClick={() =>handleAddCart(product)}
 							>
 								Masuk Keranjang
 							</Button>
@@ -136,8 +164,6 @@ export default function Menu() {
 							>
 								Beli langsung
 							</Button>
-
-							
 						</div>
 					))
 				}
