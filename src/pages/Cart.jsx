@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import {RetailData,InitCart, UpdateCart, ClearCart} from '../components/LocalStorage'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
 import { MainContext } from "../App";
 
 export default function Cart() {
@@ -74,15 +75,29 @@ export default function Cart() {
 								<div className="c-item">{cart.item_name}</div>
 								<div className="c-price">{cart.discount_price?cart.discount_price:cart.regular_price}</div>
 								<div className="c-quantity">
-									
-									<TextField 
-										key={index}
-										type="number" 
-										name="quantity"
+									<Button variant="outlined">-</Button>
+									<Input 
+										type="number"
 										value={carts[index].quantity}
 										onChange={handleQuantity(index)}
+										name="quantity"
+										disableUnderline={true}
+										style={{
+											width: "75px",
+											maxHeight: "36px !important",
+											textAlign: "center",
+											border: "none",
+											paddingLeft: "30px"
+										}}
 									/>
-									<Button variant="outlined" startIcon={<DeleteForeverIcon onClick={handleDelete(index)}/>}/>
+									
+									<Button variant="outlined">+</Button>
+									<Button variant="outlined" 
+										onClick={handleDelete(index)}
+										style={{marginLeft: "10px"}}
+									>
+										<DeleteForeverIcon/>
+									</Button>
 	
 								</div>
 							</div>
