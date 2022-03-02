@@ -6,5 +6,10 @@ export const Api = {
 	COMPANY: {
 		url: '/company/slug/:company_slug/store',
 		method: 'get'
+	},
+	TRX: {
+		url: '/transaction/retail',
+		method: 'post'
 	}
+
 }

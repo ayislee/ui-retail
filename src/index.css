@@ -96,6 +96,10 @@ code {
 	font-style: italic;
 }
 
+.item-stock {
+	font-size: .8rem;
+	padding-bottom: 1rem;
+}
 .cart-container {
 	display: grid;
 	grid-template-columns: 1fr 2fr;
@@ -112,4 +116,32 @@ code {
 .cart-image > img {
 	width: 100%;
 	border-radius: 3%;
+}
+
+.c-price {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.c-item {
+	font-style: italic;
+}
+
+.summary-label {
+	font-weight: bold;
+
+}
+.summary-price {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.btn-control {
+	min-width: 30px !important;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.summary-container {
+	padding: 1rem
 }

@@ -10,7 +10,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 
-import {RetailData,InitCart,UpdateCart,ClearCart} from '../components/LocalStorage'
+import {RetailData,InitCart,UpdateCart,ClearCart,InitMenu} from '../components/LocalStorage'
 import axios from 'axios'
 import {Api} from '../components/Api'
 import {ApiReq} from '../components/ApiServer'
@@ -30,6 +30,7 @@ export default function Menu() {
 	const [store,setStore] = useState(null)
 	const [categories,setCategory] = useState([])
 	const [products,setProduct] = useState([])
+	const [dataMenu,setDataMenu] = useState()
 
   	const handleChange = (event, newValue) => {
     	setValue(newValue);
@@ -47,23 +48,25 @@ export default function Menu() {
 			method: Api.STORE.method,
 			reqBody: retail_data
 		}
-		// console.log('retail_data.outlet',retail_data.outlet)
-		// console.log('params.url',params.url)
 		const response = await ApiReq(params)
 		if(response.success){
 			setMenu(response.data.menu)
+			setDataMenu(InitMenu(response.data))
 			
 		}
+		
 	}
 
 	useEffect(()=>{
 		reloadContent()
-		
-		
 	},[])
 
 	useEffect(()=>{
-		// console.log('menu',menu)
+		console.log('dataMenu',dataMenu)
+	},[dataMenu])
+
+	useEffect(()=>{
+		console.log('menu',menu)
 		setCategory(Object.keys(menu))
 	},[menu])
 
@@ -96,6 +99,7 @@ export default function Menu() {
 			lastCart[indexItem].quantity++
 		}else{
 			p.quantity = 1
+			p.note = ""
 			lastCart.push(p)
 		}
 
@@ -138,14 +142,15 @@ export default function Menu() {
 						<div className="item" key={index}>
 							<img src={product.item_image[0]} alt="" />
 							<div className="item-product">{product.item_name}</div>
-							<div className="item-outlet">{retail_data.outlet}</div>
+							<div className="item-outlet">{dataMenu.store.store_name}</div>
 							<div className="item-desc">{product.item_description}</div>
 							<div className="price">
-								<div className="item-price">Rp. {product.discount_price?product.discount_price:product.regular_price}</div>
+								<div className="item-price">Rp. {new Intl.NumberFormat('IDR').format(product.discount_price?product.discount_price:product.regular_price)}</div>
 								{product.discount_price?(
-								<div className="item-price-discount">Rp. {product.regular_price}</div>
+								<div className="item-price-discount">Rp. {new Intl.NumberFormat('IDR').format(product.regular_price)}</div>
 								):""}
 							</div>
+							<div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div>
 							<Button 
 								variant="contained" 
 								size="small" 
@@ -153,17 +158,18 @@ export default function Menu() {
 								fullWidth
 								sx={{marginBottom:"10px !important"}}
 								onClick={() =>handleAddCart(product)}
+								disabled={product.menu_current_quantity==0}
 							>
 								Masuk Keranjang
 							</Button>
-							<Button 
+							{/* <Button 
 								variant="outlined" 
 								size="small" 
 								startIcon={<ShoppingCartCheckoutIcon />}
 								fullWidth
 							>
 								Beli langsung
-							</Button>
+							</Button> */}
 						</div>
 					))
 				}

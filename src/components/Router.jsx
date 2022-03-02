@@ -20,7 +20,7 @@ export default function Router() {
 			<Route path="product/:product_slack" element={<Product />} />
 			<Route path="cart" element={<Cart />} />
 			<Route path="checkout" element={<Checkout />} />
-			<Route path="/company/:company_slack/:outlet_slack" element={<Company />} />
+			<Route path="/company/:company_slug/:store_slug" element={<Company />} />
 		</Routes>
 	)
 }

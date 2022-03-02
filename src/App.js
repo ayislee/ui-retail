@@ -173,7 +173,7 @@ export default function App() {
 							<div>
 								{
 								state.badge>0?(
-									
+										<Link to={"/cart"} style={{ textDecoration: 'none',color:"white" }}>
 										<IconButton
 											size="large"
 											aria-label="account of current user"
@@ -187,6 +187,7 @@ export default function App() {
 											</Badge>
 											
 										</IconButton>
+										</Link>
 									
 								):(
 									<IconButton

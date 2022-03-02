@@ -43,16 +43,12 @@ export function UpdateCart(updateCart) {
 }
 
 export function ClearCart(){
-	console.log('clear')
 	ls.remove('cart_data')
 	
 }
 
 export function GetBadge(){
-	
 	let data =ls.get("cart_data")
-	console.log('badge',data)
-	
 	if(!data){
 		const cart = []
 		ls.set("cart_data", JSON.stringify(cart))
@@ -60,14 +56,23 @@ export function GetBadge(){
 	}else{
 		data = JSON.parse(data);
 	}
-	
-
-	console.log('data**',data)
 	var cbadge = 0
-	console.log('cbadge',cbadge)
 	for (const iterator of data) {
 		cbadge = parseInt(cbadge) + parseInt(iterator.quantity)
 	}
-	console.log('cbadge',cbadge)
 	return cbadge
 }
+
+export function InitMenu(data=null) {
+	let saved
+	if(data !== null){
+		ls.set("menu_data", JSON.stringify(data))
+		saved = ls.get("menu_data")
+		return JSON.parse(saved);
+	
+	}else{
+		saved = ls.get("menu_data")
+		return JSON.parse(saved);
+	}
+}
+
