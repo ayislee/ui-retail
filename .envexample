@@ -4,3 +4,5 @@ REACT_APP_PAYMENT=https://app.sandbox.veritrans.co.id/snap/v2/vtweb/:token
 REACT_APP_PAYMENT_ID=4
 REACT_APP_DATA_CLIENT_KEY=Mid-client-klZ47HFSE5JZ8TnQ
 REACT_APP_SNAP_SCRIPT=https://app.midtrans.com/snap/snap.js
+
+REACT_APP_SNAP= https://app.sandbox.midtrans.com/snap/snap.js

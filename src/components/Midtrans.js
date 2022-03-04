@@ -30,11 +30,13 @@ export default class Midtrans extends PureComponent {
     this.snapScript = document.createElement('script')
 
     // checking environment mode
-    this.snapScript.src =
-      ENV === 'production'
-        ? 'https://app.midtrans.com/snap/snap.js'
-        : 'https://app.sandbox.midtrans.com/snap/snap.js'
-
+    // this.snapScript.src =
+    //   ENV === 'production'
+    //     ? 'https://app.midtrans.com/snap/snap.js'
+    //     : 'https://app.sandbox.midtrans.com/snap/snap.js'
+	
+	this.snapScript.src = process.env.REACT_APP_SNAP
+	
     this.snapScript.type = 'text/javascript'
     this.snapScript.onload = this.onLoad.bind(this)
     this.snapScript.dataset.clientKey = props.clientKey
