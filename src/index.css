@@ -145,3 +145,51 @@ code {
 .summary-container {
 	padding: 1rem
 }
+
+.i-data-container {
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	
+	padding:  5px;
+	grid-row-gap: 10px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+	border-bottom-style: solid !important;
+	border-bottom: 1px;
+	border-bottom-color: grey;
+}
+
+.i-data-image>img {
+	width: 100%;
+	border-radius: 10%;
+}
+
+.item-subtotal {
+	text-align: right;
+}
+.item-subtotal-label {
+	font-size: .8rem;
+}
+.item-subtotal-value {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+.item-name {
+	font-weight: bold;
+}
+.total-payment{
+	margin-top: 1rem;
+}
+.total-payment-label {
+	font-size: .8rem;
+	font-weight: bold;
+}
+
+.total-payment-value {
+	font-size: 2rem;
+	font-weight: bold;
+}

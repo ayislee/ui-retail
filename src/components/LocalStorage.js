@@ -76,3 +76,37 @@ export function InitMenu(data=null) {
 	}
 }
 
+export async function InitHistory(data=null) {
+	let saved
+	let dt
+	let old_data
+	console.log("data",data)
+	if(data !== null){
+		dt = ls.get("history_data")
+		if(!dt){
+			console.log("tidak ada data")
+			ls.set("history_data",JSON.stringify([]))
+			dt = ls.get("history_data")
+		}
+		
+		old_data = await JSON.parse(dt)
+		console.log("old_data",old_data)
+		old_data.unshift(data)
+		saved = old_data
+
+		
+	}else{
+		dt = ls.get("history_data")
+		if(!dt){
+			ls.set("history_data",JSON.stringify([]))
+			dt = ls.get("history_data")
+		}
+
+		saved = await JSON.parse(dt)
+	}
+	ls.set("history_data",JSON.stringify(saved))
+	
+	
+	return JSON.parse(ls.get("history_data"))
+
+}

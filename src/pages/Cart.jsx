@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu} from '../components/LocalStorage'
+import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu,InitHistory} from '../components/LocalStorage'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
@@ -28,6 +28,7 @@ export default function Cart() {
 	const [sk,setSk] = useState(false)
 	const [token,setToken] = useState('')
 	const [trxData,setTrxData] = useState()
+	const [itemData,setItemdata] = useState()
 
 	const [checkout,setCheckout] = useState(false)
 
@@ -130,11 +131,17 @@ export default function Cart() {
 			console.log('env',process.env.REACT_APP_PAYMENT)
 			setToken(response.token)
 			setTrxData(response.data)
+			setItemdata(JSON.parse(response.data.transaction_data))
 			setPayment(true)
+			InitHistory(response.data)
 			
 		}
 
 	} 
+
+	useEffect(()=>{
+		console.log('itemData',itemData)
+	},[itemData])
 
 	useEffect(()=>{
 		console.log("customer",customer)
@@ -284,6 +291,7 @@ export default function Cart() {
 				open={payment}
 				token={token}
 				data={trxData}
+				item_data={itemData}
 			/>
 			
 		</React.Fragment>
