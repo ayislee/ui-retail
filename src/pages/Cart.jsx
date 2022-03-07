@@ -20,7 +20,8 @@ export default function Cart() {
 	const [total,setTotal] = useState(0)
 	const [customer, setCustomer] = useState({
 		name: "Ayi",
-		msisdn: "6287870842543"
+		msisdn: "6287870842543",
+		voucher: ""
 	})
 	const [payment,setPayment] = useState(false)
 
@@ -28,7 +29,7 @@ export default function Cart() {
 	const [sk,setSk] = useState(false)
 	const [token,setToken] = useState('')
 	const [trxData,setTrxData] = useState()
-	const [itemData,setItemdata] = useState()
+	const [itemData,setItemdata] = useState([])
 
 	const [checkout,setCheckout] = useState(false)
 
@@ -122,6 +123,7 @@ export default function Cart() {
 				store_id: menu.store.store_id,
 				ms_payment_id: 4,
 				customer: customer,
+				voucher: customer.voucher,
 				item:items
 			}
 		}
@@ -131,9 +133,10 @@ export default function Cart() {
 			console.log('env',process.env.REACT_APP_PAYMENT)
 			setToken(response.token)
 			setTrxData(response.data)
-			setItemdata(JSON.parse(response.data.transaction_data))
+			setItemdata(response.data.transaction_detail)
 			setPayment(true)
 			InitHistory(response.data)
+			ClearCart()
 			
 		}
 
@@ -268,6 +271,14 @@ export default function Cart() {
 						style={{marginBottom:"1rem"}}
 						value={customer.msisdn}
 						name="msisdn"
+						onChange={handleCustomer}
+					/>
+					<TextField 
+						label="Voucher" 
+						fullWidth 
+						style={{marginBottom:"1rem"}}
+						value={customer.voucher}
+						name="voucher"
 						onChange={handleCustomer}
 					/>
 				</div>

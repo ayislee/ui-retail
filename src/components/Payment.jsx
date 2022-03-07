@@ -39,19 +39,19 @@ export default function Payment(props) {
 			<DialogTitle>Pembayaran</DialogTitle>
 			<DialogContent>
 				{
-					props.item_data?.current_order.map((data,index)=>(
+					props.item_data.map((data,index)=>(
 						<div className="i-data-container" key={index}>
 							<div className="i-data-image">
-								<img src={data.item_image[0]} alt="" />
+								<img src={data?.transaction_detail_payload?.item_image[0]} alt="" />
 							</div>
 							<div className="i-data-detail">
-								<div className="item-name">{data.category_display_name}</div>
-								<div className="item-quantity">jumlah: {data.quantity} pcs</div>
-								<div className="item-price">{new Intl.NumberFormat('IDR').format(data.discount_price?data.discount_price:data.regular_price)}</div>
+								<div className="item-name">{data.transaction_detail_item_name}</div>
+								<div className="item-quantity">jumlah: {data.transaction_detail_item_quantity} pcs</div>
+								<div className="item-price">{new Intl.NumberFormat('IDR').format(data.transaction_detail_item_price)}</div>
 								<div className="item-subtotal">
 									<div className="item-subtotal-label">Sub Total</div>
 									<div className="item-subtotal-value">
-									{new Intl.NumberFormat('IDR').format(parseInt(data.discount_price?data.discount_price:data.regular_price)*parseInt(data.quantity))}
+									{new Intl.NumberFormat('IDR').format(parseInt(data.transaction_detail_item_price)*parseInt(data.transaction_detail_item_quantity))}
 									</div>
 									
 								</div>
@@ -62,9 +62,21 @@ export default function Payment(props) {
 				}
 
 				<div className="total-payment">
-					<div className="total-payment-label">Total Pembayaran</div>
+					<div className="total-payment-label">Jumlah Pembelian</div>
 					<div className="total-payment-value">
 					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_amount))}
+					</div>
+				</div>
+				<div className="total-payment">
+					<div className="total-payment-label">Diskon</div>
+					<div className="total-payment-value">
+					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_discount))}
+					</div>
+				</div>
+				<div className="total-payment">
+					<div className="total-payment-label">Total Pembayaran</div>
+					<div className="total-payment-value">
+					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_total_amount))}
 					</div>
 				</div>
 				<Midtrans 

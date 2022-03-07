@@ -1,5 +1,5 @@
 import React, {useEffect,useState,useContext} from 'react';
-import {useParams} from 'react-router-dom'
+import {useParams,Link} from 'react-router-dom'
 import ImageGallery from 'react-image-gallery';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -139,37 +139,41 @@ export default function Menu() {
 			
 				{
 					products.map((product,index)=>(
+						
 						<div className="item" key={index}>
-							<img src={product.item_image[0]} alt="" />
-							<div className="item-product">{product.item_name}</div>
-							<div className="item-outlet">{dataMenu.store.store_name}</div>
-							<div className="item-desc">{product.item_description}</div>
-							<div className="price">
-								<div className="item-price">Rp. {new Intl.NumberFormat('IDR').format(product.discount_price?product.discount_price:product.regular_price)}</div>
-								{product.discount_price?(
-								<div className="item-price-discount">Rp. {new Intl.NumberFormat('IDR').format(product.regular_price)}</div>
-								):""}
-							</div>
-							<div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div>
-							<Button 
-								variant="contained" 
-								size="small" 
-								startIcon={<AddShoppingCartIcon />}
-								fullWidth
-								sx={{marginBottom:"10px !important"}}
-								onClick={() =>handleAddCart(product)}
-								disabled={product.menu_current_quantity==0}
-							>
-								Masuk Keranjang
-							</Button>
-							{/* <Button 
-								variant="outlined" 
-								size="small" 
-								startIcon={<ShoppingCartCheckoutIcon />}
-								fullWidth
-							>
-								Beli langsung
-							</Button> */}
+								<Link to={`/product/${product.menu_slug}`}>
+								<img src={product.item_image[0]} alt="" />
+								</Link>
+								<div className="item-product">{product.item_name}</div>
+								<div className="item-outlet">{dataMenu.store.store_name}</div>
+								<div className="item-desc">{product.item_description}</div>
+								<div className="price">
+									<div className="item-price">Rp. {new Intl.NumberFormat('IDR').format(product.discount_price?product.discount_price:product.regular_price)}</div>
+									{product.discount_price?(
+									<div className="item-price-discount">Rp. {new Intl.NumberFormat('IDR').format(product.regular_price)}</div>
+									):""}
+								</div>
+								<div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div>
+								<Button 
+									variant="contained" 
+									size="small" 
+									startIcon={<AddShoppingCartIcon />}
+									fullWidth
+									sx={{marginBottom:"10px !important"}}
+									onClick={() =>handleAddCart(product)}
+									disabled={product.menu_current_quantity==0}
+								>
+									Masuk Keranjang
+								</Button>
+								{/* <Button 
+									variant="outlined" 
+									size="small" 
+									startIcon={<ShoppingCartCheckoutIcon />}
+									fullWidth
+								>
+									Beli langsung
+								</Button> */}
+							
 						</div>
 					))
 				}

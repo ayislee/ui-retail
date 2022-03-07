@@ -44,7 +44,7 @@ code {
 	
 	padding-top: 100%;
 }
-.item > img {
+.item > a >img {
 	width: 100%;
 	border-radius: 3%;
 }
@@ -182,7 +182,19 @@ code {
 	font-weight: bold;
 }
 .total-payment{
-	margin-top: 1rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	
+	padding:  5px;
+	grid-row-gap: 10px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+	/* border-bottom-style: solid !important;
+	border-bottom: 1px;
+	border-bottom-color: grey; */
 }
 .total-payment-label {
 	font-size: .8rem;
@@ -190,6 +202,50 @@ code {
 }
 
 .total-payment-value {
-	font-size: 2rem;
+	text-align: right;
+}
+
+.history-title-container {
+	display: grid;
+	grid-template-columns: .2fr 3fr 2fr;
+	
+	padding:  10px;
+	grid-row-gap: 10px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+}
+.history-icon {
+	margin: 0;
+ 	top: 50%;
+}
+
+.history-shoping-label {
 	font-weight: bold;
+	font-size: 1rem;
+
+}
+
+.history-date {
+	font-style: italic;
+	font-size: .8rem;
+}
+
+.history-shoping-status {
+	text-align: right;
+}
+
+.history-item {
+	
+	padding:  10px;
+	
+}
+
+
+.status-pending {
+	text-align: center;
+	vertical-align: middle;
+	background-color: yellowgreen;
 }

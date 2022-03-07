@@ -37,7 +37,7 @@ export const Menus = [
 	},
 	{
 		listIcon: <ShoppingCartCheckoutIcon />,
-		listText: "Bayar",
-		link: '/checkout'
+		listText: "Riwayat Pembelian",
+		link: '/history'
 	}
 ];

@@ -76,7 +76,7 @@ export function InitMenu(data=null) {
 	}
 }
 
-export async function InitHistory(data=null) {
+export function InitHistory(data=null) {
 	let saved
 	let dt
 	let old_data
@@ -89,7 +89,7 @@ export async function InitHistory(data=null) {
 			dt = ls.get("history_data")
 		}
 		
-		old_data = await JSON.parse(dt)
+		old_data = JSON.parse(dt)
 		console.log("old_data",old_data)
 		old_data.unshift(data)
 		saved = old_data
@@ -102,7 +102,7 @@ export async function InitHistory(data=null) {
 			dt = ls.get("history_data")
 		}
 
-		saved = await JSON.parse(dt)
+		saved = JSON.parse(dt)
 	}
 	ls.set("history_data",JSON.stringify(saved))
 	
