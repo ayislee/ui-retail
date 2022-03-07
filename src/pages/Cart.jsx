@@ -122,7 +122,8 @@ export default function Cart() {
 			reqBody: {
 				store_id: menu.store.store_id,
 				ms_payment_id: 4,
-				customer: customer,
+				customer_name: customer.name,
+				customer_msisdn: customer.msisdn,
 				voucher: customer.voucher,
 				item:items
 			}
