@@ -10,10 +10,12 @@ export function RetailData() {
 	}else{
 		const retail_data = {
 			company: '',
-			outlet: ''
+			outlet: '',
+			company_id: '',
+			outlet_id: ''
 		}
 		ls.set("retail_data", JSON.stringify(retail_data));
-		saved = ls.get("retail_data")
+		saved = ls.get("retail_data") 
 	}
 	const storage = JSON.parse(saved);
 
@@ -77,7 +79,7 @@ export function InitMenu(data=null) {
 }
 
 export function InitHistory(data=null) {
-	let saved
+	let saved 
 	let dt
 	let old_data
 	console.log("data",data)
@@ -110,3 +112,16 @@ export function InitHistory(data=null) {
 	return JSON.parse(ls.get("history_data"))
 
 }
+
+export function InitCustomer(data=null) {
+	let dt
+	if(data !== null){
+		ls.set("customer_data",JSON.stringify(data))
+		dt = ls.get("customer_data")
+	}else{
+		dt = ls.get("customer_data")
+	}
+
+	return JSON.parse(dt) 
+}
+

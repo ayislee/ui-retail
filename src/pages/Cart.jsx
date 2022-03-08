@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu,InitHistory} from '../components/LocalStorage'
+import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu,InitHistory,InitCustomer} from '../components/LocalStorage'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
@@ -12,12 +12,18 @@ import {Api} from "../components/Api";
 import {ApiReq} from "../components/ApiServer"
 import axios from 'axios'
 import Payment from '../components/Payment';
-import Midtrans from '../components/Midtrans'
+import Midtrans from '../components/Midtrans' 
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+
+
 
 export default function Cart() {
 	const { state, dispatch } = useContext(MainContext);
 	const [carts,setCart] = useState([])
-	const [total,setTotal] = useState(0)
+	const [total,setTotal] = useState(4)
 	const [customer, setCustomer] = useState({
 		name: "Ayi",
 		msisdn: "6287870842543",
@@ -31,16 +37,74 @@ export default function Cart() {
 	const [trxData,setTrxData] = useState()
 	const [itemData,setItemdata] = useState([])
 
+	const [ms_payment,set_ms_payment] = useState([{
+		ms_payment_id: 4,
+		ms_payment_name: "Virtual Payment / Transfer / Credit Card (Automatic)",
+	}])
+	const [ms_payment_selected, set_ms_payment_selected] = useState(4)
+
+	const [ms_delivery, set_ms_delivery] = useState([{
+		ms_delivery_id: 1,
+        ms_delivery_name: "Pickup",
+        ms_delivery_identifier: "PICKUP"
+	}])
+
+	const [ms_delivery_selected, set_ms_delivery_selected] = useState(1)
+
+	const [vouchers,setVoucher] = useState([])
+	const [voucher_selected,set_voucher_selected] = useState('')
+
 	const [checkout,setCheckout] = useState(false)
 
-	useEffect(()=>{
-		// ClearCart()
-		console.log('menu',menu)
-		setCart(InitCart())
+	const [retail_data,set_retail_data] = useState(RetailData())
 
+	const reloadData = async () => {
+		const params = {
+			url: Api.MS_PAYMENT.url,
+			method: Api.MS_PAYMENT.method,
+		}
+
+		const response = await ApiReq(params)
+		if(response.success){
+			// console.log("ms_payment",response.data)
+			const p = ['MIDTRANS','MERCHANT_PAYMENT']
+			set_ms_payment(response.data.filter(x=> p?.includes(x.ms_payment_identifier)))
+		}
+
+		const dparams = {
+			url: Api.MS_DELIVERY.url,
+			method: Api.MS_DELIVERY.method,
+		}
+
+		const dresponse = await ApiReq(dparams)
+
+		if(dresponse.success){
+			const d = ["PICKUP"]
+			set_ms_delivery(dresponse.data.filter(x=> d?.includes(x.ms_delivery_identifier)))
+		}
+
+		const vparams = {
+			url: Api.VOUCHER.url.replace(":company_id",retail_data?.company_id),
+			method: Api.VOUCHER.method,
+		}
+
+		const vresponse = await ApiReq(vparams)
+		if(vresponse.success){
+			console.log("voucher",vresponse.data)
+			setVoucher(vresponse.data.filter(x=>x.voucher_stock_quantity>0))
+		}
+			
 		
+	}
+
+	useEffect(()=>{
+		setCart(InitCart())
+		reloadData()
 	},[])
 
+	useEffect(()=>{
+		console.log('ms_payment',ms_payment)
+	},[ms_payment])
 	useEffect(()=>{
 		
 		calculate()
@@ -121,11 +185,13 @@ export default function Cart() {
 			method: Api.TRX.method,
 			reqBody: {
 				store_id: menu.store.store_id,
-				ms_payment_id: 4,
+				ms_payment_id: ms_payment_selected,
+				ms_delivery_id: ms_delivery_selected,
 				customer_name: customer.name,
 				customer_msisdn: customer.msisdn,
-				voucher: customer.voucher,
-				item:items
+				voucher_code: voucher_selected,
+				item:items,
+				preview_fee: true
 			}
 		}
 		const response = await ApiReq(params)
@@ -136,8 +202,14 @@ export default function Cart() {
 			setTrxData(response.data)
 			setItemdata(response.data.transaction_detail)
 			setPayment(true)
-			InitHistory(response.data)
-			ClearCart()
+			// ClearCart()
+			InitCustomer({
+				customer_name: customer.name,
+				customer_msisdn: customer.msisdn
+			})
+
+
+
 			
 		}
 
@@ -167,6 +239,19 @@ export default function Cart() {
 		})
 	}
 
+	const handleMSPayment = (event) => {
+		console.log(event.target.value)
+		set_ms_payment_selected(event.target.value)
+
+	}
+
+	const handleMSDelivery = (event) => {
+		set_ms_delivery_selected(event.target.value)
+	}
+
+	const handleVoucher = (event) => {
+		set_voucher_selected(event.target.value)
+	}
 	return (
 		<React.Fragment>
 			<div className="cart-container">
@@ -274,14 +359,86 @@ export default function Cart() {
 						name="msisdn"
 						onChange={handleCustomer}
 					/>
-					<TextField 
+					{/* <TextField 
 						label="Voucher" 
 						fullWidth 
 						style={{marginBottom:"1rem"}}
 						value={customer.voucher}
 						name="voucher"
 						onChange={handleCustomer}
-					/>
+					/> */}
+
+					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
+						<InputLabel id="demo-simple-select-standard-label">Voucher</InputLabel>
+						<Select
+							label="Voucher"
+							value={voucher_selected}
+							onChange={handleVoucher}
+							style={{fontSize:".8rem"}}
+							fullWidth
+						>
+							<MenuItem 
+										value={``}
+										style={{fontSize:".8rem"}}
+									>{``}</MenuItem>
+							{
+								vouchers.map((data,index)=>(
+
+									<MenuItem 
+										key={index} 
+										value={data?.voucher_code}
+										style={{fontSize:".8rem"}}
+									>{data?.voucher_name}</MenuItem>
+								))
+							}
+
+						</Select>
+					</FormControl>
+
+					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
+						<InputLabel id="demo-simple-select-standard-label">Metode Pembayaran</InputLabel>
+						<Select
+							label="Metode pembayaran"
+							value={ms_payment_selected}
+							onChange={handleMSPayment}
+							style={{fontSize:".8rem"}}
+							fullWidth
+						>
+							{
+								ms_payment.map((data,index)=>(
+									<MenuItem 
+										key={index} 
+										value={data?.ms_payment_id}
+										style={{fontSize:".8rem"}}
+									>{data?.ms_payment_name}</MenuItem>
+								))
+							}
+
+						</Select>
+					</FormControl>
+
+					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
+						<InputLabel id="demo-simple-select-standard-label">Metode Pengiriman</InputLabel>
+						<Select
+							label="Metode pengiriman"
+							value={ms_delivery_selected}
+							onChange={handleMSDelivery}
+							style={{fontSize:".8rem"}}
+							fullWidth
+						>
+							{
+								ms_delivery.map((data,index)=>(
+									<MenuItem 
+										key={index} 
+										value={data?.ms_delivery_id}
+										style={{fontSize:".8rem"}}
+									>{data?.ms_delivery_name}</MenuItem>
+								))
+							}
+
+						</Select>
+					</FormControl>
+					
 				</div>
 				
 				
@@ -304,6 +461,12 @@ export default function Cart() {
 				token={token}
 				data={trxData}
 				item_data={itemData}
+				store_id={menu.store.store_id}
+				ms_payment_id= {ms_payment_selected}
+				ms_delivery_id={ms_delivery_selected}
+				customer_name={customer.name}
+				customer_msisdn={customer.msisdn}
+				voucher_code={ voucher_selected}
 			/>
 			
 		</React.Fragment>

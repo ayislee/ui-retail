@@ -7,10 +7,12 @@ import Product from "../pages/Product"
 import Cart from "../pages/Cart"
 import History from "../pages/History"
 import Company from "../components/Company"
+import HistoryDetail from "../pages/HistoryDetail"
 
 
 export default function Router() {
 	const {id} = useParams()
+	
 	
 	return (
 		<Routes>
@@ -21,6 +23,7 @@ export default function Router() {
 			<Route path="cart" element={<Cart />} />
 			<Route path="history" element={<History />} />
 			<Route path="/company/:company_slug/:store_slug" element={<Company />} />
+			<Route path="/history-detail/:transaction_number" element={<HistoryDetail />} />
 		</Routes>
 	)
 }

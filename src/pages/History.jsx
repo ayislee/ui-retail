@@ -1,24 +1,50 @@
 import React, {useEffect, useState} from 'react'
-import { InitHistory } from '../components/LocalStorage'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import {ApiReq} from '../components/ApiServer'
+import {Api} from '../components/Api'
+import {InitCustomer} from '../components/LocalStorage'
+import Pagination from '@mui/material/Pagination';
 
+import {Link} from 'react-router-dom'
 export default function History() {
     const [history,setHistory] = useState([])
+	const [page,setPage] = useState(1)
+	const [lastPage,setLastPage] = useState(0)
+	const [customer,setCustomer] = useState(InitCustomer())
     
+	const reloadData = async () => {
+		const params = {
+			url: Api.HISTORY.url.replace(':customer_msisdn',customer.customer_msisdn)+'?page='+page,
+			method: Api.HISTORY.method
+		}
+
+		const response = await ApiReq(params)
+		if(response.success){
+			setHistory(response.data)
+			setLastPage(response.data.last_page)
+		}
+	}
     useEffect(()=>{
-        setHistory(InitHistory())
+		reloadData()
+		
+
     },[])
 
     useEffect(()=> {
         console.log('history',history)
     },[history])
+
+	const handlePaginationChange = (event,value) => {
+		setPage(value)
+	}
     return (
        <React.Fragment>
            <div className="history-title">Riwayat pembelanjaan</div>
            
             {
                    history.map((data,index)=>(
-                        <div className="history-item" key={index}>
+                        <div className="history-item" key={index} >
+							<Link to={`/history-detail/${data.transaction_number}`} style={{textDecoration:"none",color:"black"}}>
                             <div className="history-title-container">
                                 <div className="history-icon"><ShoppingBasketIcon/></div>
                                 <div className="history-shoping">
@@ -35,10 +61,19 @@ export default function History() {
                                 <div className="history-shoping-label">Kode Transaksi</div>
                                 <div className="history-date">{data.transaction_number}</div>
                             </div>
+							</Link>
                             
                         </div>
                    ))
             }
+
+			<Pagination 
+				count={lastPage} 
+				variant="outlined" 
+				shape="rounded" 
+				onChange={handlePaginationChange}
+				style= {{marginLeft:"1rem"}}
+			/>
             
        </React.Fragment>
     )

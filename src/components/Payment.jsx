@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import { Dialog } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 
 import Divider from '@mui/material/Divider';
 import Midtrans from './Midtrans'
+import {Api} from '../components/Api'
+import {ApiReq} from '../components/ApiServer'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
@@ -15,6 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Payment(props) {
 	const [scroll, setScroll] = React.useState('paper');
+	const [token,set_token] = useState("")
 
 
 	const handlePaySuccess = () =>{
@@ -29,6 +32,48 @@ export default function Payment(props) {
 	const handlePayClose = () =>{
 		alert("Close")
 	}
+
+	
+
+	const handlePay = async () => {
+
+		const items = []
+
+		for (const i of props.item_data) {
+			items.push({
+				item_id: i.item_id,
+				item_name: i.item_name,
+				quantity: i.quantity,
+				note: i.note
+			})
+		}
+
+		console.log('props',props)
+
+		const params = {
+			url: Api.TRX.url,
+			method: Api.TRX.method,
+			reqBody: {
+				store_id: props.store_id,
+				ms_payment_id: props.ms_payment_id,
+				ms_delivery_id: props.ms_delivery_id,
+				customer_name: props.customer_name,
+				customer_msisdn: props.customer_msisdn,
+				voucher_code: props.voucher_code,
+				item:items,
+				
+			}
+		}
+
+		const response = await ApiReq(params)
+		if(response.success){
+			set_token(response.token)
+		}
+
+
+
+	}
+
   	return (
 		<Dialog
 			fullScreen
@@ -42,16 +87,16 @@ export default function Payment(props) {
 					props.item_data.map((data,index)=>(
 						<div className="i-data-container" key={index}>
 							<div className="i-data-image">
-								<img src={data?.transaction_detail_payload?.item_image[0]} alt="" />
+								<img src={data?.item_image[0]} alt="" />
 							</div>
 							<div className="i-data-detail">
 								<div className="item-name">{data.transaction_detail_item_name}</div>
-								<div className="item-quantity">jumlah: {data.transaction_detail_item_quantity} pcs</div>
-								<div className="item-price">{new Intl.NumberFormat('IDR').format(data.transaction_detail_item_price)}</div>
+								<div className="item-quantity">jumlah: {data.quantity} pcs</div>
+								<div className="item-price">{new Intl.NumberFormat('IDR').format(data.current_price)}</div>
 								<div className="item-subtotal">
 									<div className="item-subtotal-label">Sub Total</div>
 									<div className="item-subtotal-value">
-									{new Intl.NumberFormat('IDR').format(parseInt(data.transaction_detail_item_price)*parseInt(data.transaction_detail_item_quantity))}
+									{new Intl.NumberFormat('IDR').format(parseInt(data.current_price)*parseInt(data.quantity))}
 									</div>
 									
 								</div>
@@ -79,9 +124,19 @@ export default function Payment(props) {
 					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_total_amount))}
 					</div>
 				</div>
+
+				<Button 
+				onClick={handlePay}
+					sx={{marginTop:"1rem"}}
+					variant="contained"
+				>
+					Bayar
+				</Button>
+
+				{token && 
 				<Midtrans 
 					clientKey={process.env.REACT_APP_DATA_CLIENT_KEY} 
-					token={props.token}
+					token={token}
 					onSuccess={handlePaySuccess}
 					onError={handlePayError}
 					onPending={handlePayPending}
@@ -89,13 +144,10 @@ export default function Payment(props) {
 
 
 				>
-					<Button 
-						sx={{marginTop:"1rem"}}
-						variant="contained"
-					>
-						Bayar
-					</Button>
+					<button>Bayar</button>
 				</Midtrans>
+				}
+				
 				
 			</DialogContent>
       	</Dialog>

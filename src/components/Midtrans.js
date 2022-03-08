@@ -19,7 +19,7 @@ export default class Midtrans extends PureComponent {
       token: '',
     }
     // bind react-midtrans method
-    this.mergeWithChildren = this.mergeWithChildren.bind(this)
+    // this.mergeWithChildren = this.mergeWithChildren.bind(this)
     // backup currentview
     this.currentViewport = document
       .getElementsByTagName('meta')
@@ -51,7 +51,15 @@ export default class Midtrans extends PureComponent {
 
   componentDidMount() {
     document.head.appendChild(this.snapScript)
-    this.mergeWithChildren(this.props.children)
+    // this.mergeWithChildren(this.props.children)
+	setTimeout(() => {
+		this.state.snap.pay(
+			this.state.token,
+			/** @todo options **/
+		)	
+	}, 100);
+
+
   }
 
   mergeWithChildren(children) {
@@ -60,6 +68,7 @@ export default class Midtrans extends PureComponent {
       // Assign new Props
       {
         onClick: () => {
+			alert("ha;;o")
           // If Children have a onClick
           children.onClick && children.onClick()
           if (this.state.token && this.state.token !== '') {

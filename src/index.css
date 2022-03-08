@@ -12,16 +12,16 @@ code {
     monospace;
 }
 
-.body-content {
+.body-content { 
 	max-width: 500px;
   	margin: auto;
   	background: white;
-}
+}  
 
 .css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
 	position: fixed !important;
 }
-
+ 
 
 .container-2-column {
 	display: grid;
@@ -239,7 +239,12 @@ code {
 
 .history-item {
 	
-	padding:  10px;
+	padding:  10px; 
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+	border-radius: 5px;
+	margin: 1rem;
 	
 }
 
@@ -247,5 +252,13 @@ code {
 .status-pending {
 	text-align: center;
 	vertical-align: middle;
-	background-color: yellowgreen;
+	color: #b5a200;
+	font-weight: bold; 
+}
+
+.title-page {
+	font-size: large;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
 }
