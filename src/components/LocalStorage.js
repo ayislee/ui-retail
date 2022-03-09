@@ -119,7 +119,13 @@ export function InitCustomer(data=null) {
 		ls.set("customer_data",JSON.stringify(data))
 		dt = ls.get("customer_data")
 	}else{
-		dt = ls.get("customer_data")
+		const d = ls.get("customer_data")
+		if(d){
+			dt = d
+		}else{
+			ls.set("customer_data",JSON.stringify({customer_name:"",customer_msisdn:""}))
+			dt = ls.get("customer_data")
+		}
 	}
 
 	return JSON.parse(dt) 

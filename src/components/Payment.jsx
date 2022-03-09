@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import Midtrans from './Midtrans'
 import {Api} from '../components/Api'
 import {ApiReq} from '../components/ApiServer'
+import {ClearCart} from '../components/LocalStorage'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
@@ -36,7 +37,7 @@ export default function Payment(props) {
 	
 
 	const handlePay = async () => {
-
+		// ClearCart()
 		const items = []
 
 		for (const i of props.item_data) {
@@ -118,6 +119,13 @@ export default function Payment(props) {
 					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_discount))}
 					</div>
 				</div>
+				<div className="total-payment">
+					<div className="total-payment-label">Total Pembayaran</div>
+					<div className="total-payment-value">
+					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_total_amount))}
+					</div>
+				</div>
+
 				<div className="total-payment">
 					<div className="total-payment-label">Total Pembayaran</div>
 					<div className="total-payment-value">

@@ -48,7 +48,19 @@ export const ApiReq = async (params,pub=true) => {
 		
 
 	} catch (error) {
-		return error
+		let message
+		switch (error.response.status) {
+			case 401:
+				message = "tidak ada data"
+				break;
+		
+			default:
+				message = error.response.message
+				break;
+		}
+		return {
+			error: error.response.status
+		}
 	}
 
 	

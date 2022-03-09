@@ -4,6 +4,8 @@ import {ApiReq} from '../components/ApiServer'
 import {Api} from '../components/Api'
 import {InitCustomer} from '../components/LocalStorage'
 import Pagination from '@mui/material/Pagination';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 import {Link} from 'react-router-dom'
 export default function History() {
@@ -19,10 +21,14 @@ export default function History() {
 		}
 
 		const response = await ApiReq(params)
+        console.log("response",response)
 		if(response.success){
 			setHistory(response.data)
 			setLastPage(response.data.last_page)
-		}
+		}else{
+
+            window.location.href="/"
+        }
 	}
     useEffect(()=>{
 		reloadData()
