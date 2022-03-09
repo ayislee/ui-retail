@@ -29,7 +29,7 @@ import DatePicker from 'react-mobile-datepicker';
 
 export default function Cart() {
 	const { state, dispatch } = useContext(MainContext);
-	const [carts,setCart] = useState([])
+	const [carts,setCart] = useState(InitCart())
 	const [total,setTotal] = useState(4)
 	const [customer, setCustomer] = useState({
 		name: "Ayi",
@@ -132,7 +132,10 @@ export default function Cart() {
 
 	useEffect(()=>{
 		console.log("date",delivery_date.time)
-		setCart(InitCart())
+		// setCart(InitCart())
+		if(carts.length == 0){
+			window.location.href="/menus"
+		}
 		reloadData()
 	},[])
 
@@ -312,6 +315,7 @@ export default function Cart() {
 		set_delivery_date({...delivery_date,isOpen:true})
 	}
 	return (
+		
 		<React.Fragment>
 			<div className="cart-container">
 				{

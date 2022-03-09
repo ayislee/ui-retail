@@ -30,6 +30,10 @@ export const Api = {
 	VOUCHER: {
 		url: "/company/:company_id/voucher/eligible",
 		method: "get"
+	},
+	PRODUCT: {
+		url: "/menu/slug/:menu_slug",
+		method: "get"
 	}
 
 	

@@ -256,9 +256,27 @@ code {
 	font-weight: bold; 
 }
 
+.status-approved {
+	text-align: center;
+	vertical-align: middle;
+	color: #0eb933;
+	font-weight: bold; 
+}
+
+.status-rejected {
+	text-align: center;
+	vertical-align: middle;
+	color: #8d1332bd;
+	font-weight: bold; 
+}
+
 .title-page {
 	font-size: large;
 	font-weight: bold;
 	text-transform: uppercase;
 	margin-bottom: 1rem;
 }
+
+.image-gallery-image {
+	height: 400px !important;
+   }
