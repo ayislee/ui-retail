@@ -17,6 +17,13 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import DatePicker from 'react-mobile-datepicker';
+
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// import DateTimePicker from '@mui/lab/DateTimePicker';
+// import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
+
 
 
 
@@ -57,6 +64,32 @@ export default function Cart() {
 	const [checkout,setCheckout] = useState(false)
 
 	const [retail_data,set_retail_data] = useState(RetailData())
+	const [delivery_date,set_delivery_date] = useState({
+		time: new Date(),
+        isOpen: false,
+		date_string: ""
+	})
+
+	const [date_pickup,set_date_pickup] = useState("")
+	
+	useEffect(()=>{
+		let m
+		let d
+		let h
+		let mi
+		let s
+		m = delivery_date.time.getMonth()<10? `0`+ delivery_date.time.getMonth():delivery_date.time.getMonth() 
+		d = delivery_date.time.getDate()<10? `0`+ delivery_date.time.getDate():delivery_date.time.getDate()
+		h = delivery_date.time.getHours()<10? `0`+ delivery_date.time.getHours():delivery_date.time.getHours()
+		mi = delivery_date.time.getMinutes()<10? `0`+ delivery_date.time.getMinutes():delivery_date.time.getMinutes()
+		s = delivery_date.time.getSeconds()<10? `0`+ delivery_date.time.getSeconds():delivery_date.time.getSeconds()
+
+
+		set_date_pickup(`${delivery_date.time.getFullYear()}-${m}-${d} ${h}:${mi}:${s}`)
+	},[delivery_date])
+
+
+	
 
 	const reloadData = async () => {
 		const params = {
@@ -98,6 +131,7 @@ export default function Cart() {
 	}
 
 	useEffect(()=>{
+		console.log("date",delivery_date.time)
 		setCart(InitCart())
 		reloadData()
 	},[])
@@ -110,6 +144,9 @@ export default function Cart() {
 		calculate()
 	},[carts])
 
+	useEffect(()=>{
+		console.log("menu",menu)
+	},[menu])
 	const handleQuantity = (index) => (event) =>{
 
 		if(event.target.value < 0) event.target.value=0
@@ -191,6 +228,7 @@ export default function Cart() {
 				customer_msisdn: customer.msisdn,
 				voucher_code: voucher_selected,
 				item:items,
+				delivery_expected_datetime: date_pickup,
 				preview_fee: true
 			}
 		}
@@ -198,9 +236,9 @@ export default function Cart() {
 		console.log('response',response)
 		if(response.success){
 			console.log('env',process.env.REACT_APP_PAYMENT)
-			setToken(response.token)
+			
 			setTrxData(response.data)
-			setItemdata(response.data.transaction_detail)
+			setItemdata(response.data.current_order)
 			setPayment(true)
 			// ClearCart()
 			InitCustomer({
@@ -251,6 +289,27 @@ export default function Cart() {
 
 	const handleVoucher = (event) => {
 		set_voucher_selected(event.target.value)
+	}
+
+	const handleSelectPicker = (value) => {
+		set_delivery_date({
+			...delivery_date,
+			time: value,
+			isOpen: false
+		})
+		console.log('time')
+	} 
+	
+	const handleCancelPicker = () => {
+		set_delivery_date({
+			...delivery_date,
+			
+			isOpen: false
+		})
+	}
+
+	const handleClickDate = () => {
+		set_delivery_date({...delivery_date,isOpen:true})
 	}
 	return (
 		<React.Fragment>
@@ -439,6 +498,28 @@ export default function Cart() {
 						</Select>
 					</FormControl>
 					
+					<FormControl style={{marginBottom:"1rem"}}>
+						<Button 
+							onClick={handleClickDate}
+							variant="contained"
+							disabled={delivery_date.isOpen}
+						>
+							Reancana Pengambilan
+						</Button>
+						{date_pickup}
+					</FormControl>
+					
+					
+					<DatePicker
+						showCaption={true}
+						value={delivery_date.time}
+						isOpen={delivery_date.isOpen}
+						onSelect={handleSelectPicker}
+						onCancel={handleCancelPicker} 
+						confirmText={'Ok'}
+						cancelText = {'Batal'}
+
+					/>
 				</div>
 				
 				
@@ -452,13 +533,12 @@ export default function Cart() {
 				
 				
 				<FormGroup>
-					<FormControlLabel control={<Checkbox  checked={sk} onClick={handleSK}/>} label="Saya setuju" />
+					<FormControlLabel control={<Checkbox  checked={sk} onClick={handleSK} disabled={delivery_date.isOpen} />} label="Saya setuju" />
 				</FormGroup>
 			</div>
 
 			<Payment 
 				open={payment}
-				token={token}
 				data={trxData}
 				item_data={itemData}
 				store_id={menu.store.store_id}
@@ -467,6 +547,10 @@ export default function Cart() {
 				customer_name={customer.name}
 				customer_msisdn={customer.msisdn}
 				voucher_code={ voucher_selected}
+				ms_payment = {ms_payment.filter(x=>x.ms_payment_id==ms_payment_selected)[0]}
+				ms_delivery = {ms_delivery.filter(x=>x.ms_delivery_id==ms_delivery_selected)[0]}
+				pickup={menu.store.store_address}
+				date_pickup={date_pickup}
 			/>
 			
 		</React.Fragment>

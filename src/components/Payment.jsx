@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Payment(props) {
 	const [scroll, setScroll] = React.useState('paper');
-	const [token,set_token] = useState("")
+	const [token,set_token] = useState(null)
 
 
 	const handlePaySuccess = () =>{
@@ -37,7 +37,10 @@ export default function Payment(props) {
 	
 
 	const handlePay = async () => {
-		// ClearCart()
+		ClearCart()
+		if(props.ms_payment_id != 4){
+			window.location.href='/history'
+		}
 		const items = []
 
 		for (const i of props.item_data) {
@@ -68,7 +71,14 @@ export default function Payment(props) {
 
 		const response = await ApiReq(params)
 		if(response.success){
-			set_token(response.token)
+			console.log("last_token",token)
+			if(response.token){
+				set_token(response.token)
+			}else{
+				window.location.href="/history"
+			}
+			
+			
 		}
 
 
@@ -127,12 +137,41 @@ export default function Payment(props) {
 				</div>
 
 				<div className="total-payment">
-					<div className="total-payment-label">Total Pembayaran</div>
+					<div className="total-payment-label">Metoda Pembayaran</div>
 					<div className="total-payment-value">
-					{new Intl.NumberFormat('IDR').format(parseInt(props.data?.transaction_total_amount))}
+						{props.ms_payment.ms_payment_name}
 					</div>
 				</div>
 
+				<div className="total-payment">
+					<div className="total-payment-label">Metoda Pengiriman</div>
+					<div className="total-payment-value">
+						{props.ms_delivery.ms_delivery_name}
+					</div>
+				</div>
+
+				<div className="total-payment">
+					<div className="total-payment-label">Alamat Pickup</div>
+					<div className="total-payment-value">
+						{props.pickup}
+					</div>
+				</div>
+
+				<div className="total-payment">
+					<div className="total-payment-label">Rencana Pengambilan</div>
+					<div className="total-payment-value">
+						{props.date_pickup}
+					</div>
+				</div>
+
+				{props.ms_payment.ms_payment_id != 4?(
+					<div className="total-payment">
+					<div className="total-payment-label">Catatan</div>
+					<div className="total-payment-value">
+						Selesaikan pembayaran di kasir
+					</div>
+				</div>
+				):(``)}
 				<Button 
 				onClick={handlePay}
 					sx={{marginTop:"1rem"}}
