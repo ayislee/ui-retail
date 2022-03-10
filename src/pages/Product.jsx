@@ -1,5 +1,5 @@
 import React, {useState,useEffect,useContext} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams,Link} from 'react-router-dom'
 import {Api} from "../components/Api"
 import {ApiReq} from '../components/ApiServer'
 import ImageGallery from 'react-image-gallery';
@@ -36,6 +36,9 @@ export default function Product() {
 						thumbnail: i,
 					})
 				}
+
+				// redifine localstorage
+				
 
 				set_product_images(img)
 				
@@ -88,20 +91,27 @@ export default function Product() {
 					/>
 					</div>
 
-					<div className="product-title">
+					<div className="item-title">
 						{product.item_name}
 					</div>
-					<div className="peoduct-sku">
+					<div className="label-info">
 						{product.item_sku}
 					</div>
-					<div className="product-desc">
+					<div className="item-full-desc">
 						{product.item_description}
 					</div>
 					<div className="store-container">
-						<div className="store-label">Toko</div>
-						<div className="store-name">{menu.store.store_name}</div>
-						<div className="store-address">{menu.store.store_address}</div>
-						
+						<div className="label-title">Toko</div>
+						<div className="item-sub-title">{product.store.store_name}</div>
+						<div className="item-full-desc-sub">{product.store.store_address}</div>
+						<div className="item-link">
+							<a href={`https://www.google.com/maps/@${product.store.store_coordinate}`}
+							className="btn"
+							target="_blank"
+						>
+								 Location 
+							</a>
+						</div>
 					</div>
 
 					<div className="price">
@@ -115,7 +125,7 @@ export default function Product() {
 						
 						
 					
-					<div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div>
+					<div className="item-full-desc-sub">Jumlah stok: {product.menu_current_quantity}</div>
 
 					<Button 
 						variant="contained" 

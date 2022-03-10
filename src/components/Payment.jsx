@@ -19,20 +19,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Payment(props) {
 	const [scroll, setScroll] = React.useState('paper');
 	const [token,set_token] = useState(null)
+	const [loadMidtrans,set_loadMidtrans] = useState(false)
 
 
-	const handlePaySuccess = () =>{
-		alert("Success")
-	}
-	const handlePayError = () =>{
-		alert("Success")
-	}
-	const handlePayPending = () =>{
-		alert("Pending")
-	}
-	const handlePayClose = () =>{
-		alert("Close")
-	}
+	
 
 	
 
@@ -71,11 +61,11 @@ export default function Payment(props) {
 
 		const response = await ApiReq(params)
 		if(response.success){
-			console.log("last_token",token)
+			console.log("response",response)
 			if(response.token){
-				set_token(response.token)
+				props.onPayment(response.token)
 			}else{
-				window.location.href="/history"
+				props.onPayment(null)
 			}
 			
 			
@@ -84,6 +74,13 @@ export default function Payment(props) {
 
 
 	}
+
+	useEffect(() => {
+		if(token !== null){
+			set_loadMidtrans(true)
+		}
+		console.log('token',token)	
+	},[token])
 
   	return (
 		<Dialog
@@ -180,20 +177,22 @@ export default function Payment(props) {
 					Bayar
 				</Button>
 
-				{token && 
-				<Midtrans 
-					clientKey={process.env.REACT_APP_DATA_CLIENT_KEY} 
-					token={token}
-					onSuccess={handlePaySuccess}
-					onError={handlePayError}
-					onPending={handlePayPending}
-					onClose={handlePayClose}
+				{/* {loadMidtrans?(
+					<Midtrans 
+						clientKey={process.env.REACT_APP_DATA_CLIENT_KEY} 
+						token={token}
+						onSuccess={handlePaySuccess}
+						onError={handlePayError}
+						onPending={handlePayPending}
+						onClose={handlePayClose}
 
 
-				>
-					<button>Bayar</button>
-				</Midtrans>
-				}
+					>
+						<button>Bayar</button>
+					</Midtrans>
+				):(``)} */}
+				
+				
 				
 				
 			</DialogContent>

@@ -18,6 +18,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import DatePicker from 'react-mobile-datepicker';
+import CustomCart from '../components/CustomCart'
+
 
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
 // import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -28,19 +30,21 @@ import DatePicker from 'react-mobile-datepicker';
 
 
 export default function Cart() {
-	const { state, dispatch } = useContext(MainContext);
+	
 	const [carts,setCart] = useState(InitCart())
-	const [total,setTotal] = useState(4)
+	const [total,setTotal] = useState(0)
+	
+	
 	const [customer, setCustomer] = useState({
-		name: "Ayi",
-		msisdn: "6287870842543",
+		name: "",
+		msisdn: "",
 		voucher: ""
 	})
 	const [payment,setPayment] = useState(false)
 
 	const [menu,SetMenu] = useState(InitMenu())
 	const [sk,setSk] = useState(false)
-	const [token,setToken] = useState('')
+	const [token,setToken] = useState(null)
 	const [trxData,setTrxData] = useState()
 	const [itemData,setItemdata] = useState([])
 
@@ -71,6 +75,9 @@ export default function Cart() {
 	})
 
 	const [date_pickup,set_date_pickup] = useState("")
+
+	const [afterPay,setAfterPay] = useState(false)
+
 	
 	useEffect(()=>{
 		let m
@@ -137,75 +144,33 @@ export default function Cart() {
 			window.location.href="/menus"
 		}
 		reloadData()
+		
 	},[])
+
+	useEffect(()=>{
+		console.log("total",total)
+	},[total])
 
 	useEffect(()=>{
 		console.log('ms_payment',ms_payment)
 	},[ms_payment])
+	
 	useEffect(()=>{
-		
 		calculate()
+		
 	},[carts])
 
 	useEffect(()=>{
 		console.log("menu",menu)
 	},[menu])
-	const handleQuantity = (index) => (event) =>{
+	
+	
 
-		if(event.target.value < 0) event.target.value=0
-		if(event.target.value === "" ) event.target.value=0
-		carts[index].quantity=event.target.value
+	
 
-		const p1 = UpdateCart(carts)
-		calculate()
-		setCart(InitCart())
-		dispatch({
-			type: "BADGE",
-			payload: InitCart(),
-		});
-	}
+	
 
-	const handleDelete = (index) => (event) =>{
-		carts.splice(index, 1);
-		const p1 = UpdateCart(carts)
-		calculate()
-		setCart(InitCart())
-		dispatch({
-			type: "BADGE",
-			payload: InitCart(),
-		});
-	}
-
-	const calculate = () => {
-		let stotal = 0
-		for (const iterator of carts) {
-			stotal = stotal + (iterator.discount_price?parseInt(iterator.discount_price):parseInt(iterator.regular_price))*parseInt(iterator.quantity)
-		}
-		setTotal(stotal)
-	}
-
-	const stepUp = (index) => {
-		carts[index].quantity++
-		const p1 = UpdateCart(carts)
-		calculate()
-		setCart(InitCart())
-		dispatch({
-			type: "BADGE",
-			payload: InitCart(),
-		});
-	}
-
-	const stepDown = (index) => {
-		carts[index].quantity--
-		if(carts[index].quantity<0) carts[index].quantity = 0
-		const p1 = UpdateCart(carts)
-		calculate()
-		setCart(InitCart())
-		dispatch({
-			type: "BADGE",
-			payload: InitCart(),
-		});
-	}
+	
 
 	const handlePay = async () => {
 		console.log('carts',carts)
@@ -263,11 +228,7 @@ export default function Cart() {
 	useEffect(()=>{
 		console.log("customer",customer)
 	},[customer])
-	const handleNote = (index) => (event) => {
-		carts[index].note=event.target.value
-		const p1 = UpdateCart(carts)
-		setCart(InitCart())
-	}
+	
 
 	const handleSK = () => {
 		setSk(!sk)
@@ -314,232 +275,102 @@ export default function Cart() {
 	const handleClickDate = () => {
 		set_delivery_date({...delivery_date,isOpen:true})
 	}
+
+	const handleOnPayment = (token) => {
+		console.log(token)
+		setToken(token)
+		setPayment(false)
+		setAfterPay(true)
+	}
+
+	const handleSetCart = (value) =>{
+		setCart(value)
+	}
+
+	const handeSetTotal = (value) => {
+		
+	}
+
+	const calculate = () => {
+		let stotal = 0
+		for (const iterator of carts) {
+			stotal = stotal + (iterator.discount_price?parseInt(iterator.discount_price):parseInt(iterator.regular_price))*parseInt(iterator.quantity)
+		}
+		setTotal(stotal)
+	}
+
+	const handleGoHistory = () => {
+		window.location.href='/history'
+	}
+
+	const handlePaySuccess = () =>{
+		alert("Success")
+	}
+	const handlePayError = () =>{
+		alert("Success")
+	}
+	const handlePayPending = () =>{
+		alert("Pending")
+	}
+	const handlePayClose = () =>{
+		alert("Close")
+	}
+
 	return (
 		
 		<React.Fragment>
-			<div className="cart-container">
-				{
-					carts.map((cart,index)=>(
-						<React.Fragment key={index}>
-	
-							<div className="cart-image" key={index}>
-								<img src={cart.item_image[0]} alt="" />
-							</div>
-							<div className="cart-detail">
-								<div className="c-item">{cart.item_name}</div>
-								<div className="c-price">
-									 
-									Rp {cart.discount_price?
-										new Intl.NumberFormat('IDR').format(cart.discount_price):
-										new Intl.NumberFormat('IDR').format(cart.regular_price)
-									}
-								</div>
-								<div className="c-quantity">
-									<Button variant="outlined"
-										className="btn-control"
-										onClick={()=>stepDown(index)}
-									>
-										-
-									</Button>
-									<Input 
-										type="number"
-										value={carts[index].quantity}
-										onChange={handleQuantity(index)}
-										name="quantity"
-										disableUnderline={true}
-										style={{
-											width: "50px",
-											maxHeight: "36px !important",
-											textAlign: "center",
-											border: "none",
-											paddingLeft: "20px"
-										}}
-									/>
-									
-									<Button 
-										variant="outlined"
-										className="btn-control"
-										onClick={()=>stepUp(index)}
-									>
-										+
-									</Button>
-									<Button variant="outlined" 
-										onClick={handleDelete(index)}
-										style={{
-											marginLeft: "10px",
-										}}
+			{afterPay?(
+				<div style={{padding:"1rem"}}>
+					<Button 
+						fullWidth 
+						onClick={handleGoHistory}
+						size="large"
+						variant="contained"
 
-									>
-										<DeleteForeverIcon/>
-									</Button>
-	
-								</div>
-								<div className="c-note">
-									<TextField fullWidth
-										label="Catatan"
-										type = "string"
-										name = "note"
-										style={{marginTop: "10px"}}
-										multiline = {true}
-										rows = {2}
-										value={carts[index].note}
-										onChange={handleNote(index)}
-									>
+					>
+						Riwayat Pembayaran
+					</Button>
 
-									</TextField>
-								</div>
-							</div>
-							
-	
-						</React.Fragment>
+					{token && (
+						<Midtrans 
+							clientKey={process.env.REACT_APP_DATA_CLIENT_KEY} 
+							token={token}
+							onSuccess={handlePaySuccess}
+							onError={handlePayError}
+							onPending={handlePayPending}
+							onClose={handlePayClose}
+
+
+						/>
 						
-					))
-				}
-				
-				
-				
-			</div>
-			<div className="summary-container">
-				<div className="summary">
-					<div className="summary-label">Total Harga</div>
-					<div className="summary-price">Rp {new Intl.NumberFormat('IDR').format(total)}</div>
+					)}
+					
 				</div>
-				
-				<div className="customer">
-					<TextField 
-						label="Nama" 
-						fullWidth
-						style={{marginBottom:"0.5rem",marginTop: "1rem"}}
-						value={customer.name}
-						name="name"
-						onChange={handleCustomer}
-					/>
-					<TextField 
-						label="No Handphone" 
-						fullWidth 
-						style={{marginBottom:"1rem"}}
-						value={customer.msisdn}
-						name="msisdn"
-						onChange={handleCustomer}
-					/>
-					{/* <TextField 
-						label="Voucher" 
-						fullWidth 
-						style={{marginBottom:"1rem"}}
-						value={customer.voucher}
-						name="voucher"
-						onChange={handleCustomer}
-					/> */}
-
-					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
-						<InputLabel id="demo-simple-select-standard-label">Voucher</InputLabel>
-						<Select
-							label="Voucher"
-							value={voucher_selected}
-							onChange={handleVoucher}
-							style={{fontSize:".8rem"}}
-							fullWidth
-						>
-							<MenuItem 
-										value={``}
-										style={{fontSize:".8rem"}}
-									>{``}</MenuItem>
-							{
-								vouchers.map((data,index)=>(
-
-									<MenuItem 
-										key={index} 
-										value={data?.voucher_code}
-										style={{fontSize:".8rem"}}
-									>{data?.voucher_name}</MenuItem>
-								))
-							}
-
-						</Select>
-					</FormControl>
-
-					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
-						<InputLabel id="demo-simple-select-standard-label">Metode Pembayaran</InputLabel>
-						<Select
-							label="Metode pembayaran"
-							value={ms_payment_selected}
-							onChange={handleMSPayment}
-							style={{fontSize:".8rem"}}
-							fullWidth
-						>
-							{
-								ms_payment.map((data,index)=>(
-									<MenuItem 
-										key={index} 
-										value={data?.ms_payment_id}
-										style={{fontSize:".8rem"}}
-									>{data?.ms_payment_name}</MenuItem>
-								))
-							}
-
-						</Select>
-					</FormControl>
-
-					<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
-						<InputLabel id="demo-simple-select-standard-label">Metode Pengiriman</InputLabel>
-						<Select
-							label="Metode pengiriman"
-							value={ms_delivery_selected}
-							onChange={handleMSDelivery}
-							style={{fontSize:".8rem"}}
-							fullWidth
-						>
-							{
-								ms_delivery.map((data,index)=>(
-									<MenuItem 
-										key={index} 
-										value={data?.ms_delivery_id}
-										style={{fontSize:".8rem"}}
-									>{data?.ms_delivery_name}</MenuItem>
-								))
-							}
-
-						</Select>
-					</FormControl>
+			):(
+				<CustomCart
+					carts={carts}
+					onSetCart={(value)=>handleSetCart(value)}
+					customer={customer}
+					onHandleCustomer={(e)=>handleCustomer(e)}
+					voucher_selected={voucher_selected}
+					vouchers={vouchers}
+					OnHandleVoucher={(e)=>handleVoucher(e)}
+					ms_payment_selected={ms_payment_selected}
+					OnHandleMSPayment={(e)=>handleMSPayment(e)}
+					ms_payment={ms_payment}
+					ms_delivery_selected = {ms_delivery_selected}
+					OnHandleMSDelivery={(e)=>handleMSDelivery(e)}
+					ms_delivery = {ms_delivery}
+					delivery_date={delivery_date}
+					date_pickup={date_pickup}
+					OnHandlePay={handlePay}
+					total={total}
+					OnHandleDeliveryDate={(value)=>set_delivery_date(value)}
 					
-					<FormControl style={{marginBottom:"1rem"}}>
-						<Button 
-							onClick={handleClickDate}
-							variant="contained"
-							disabled={delivery_date.isOpen}
-						>
-							Reancana Pengambilan
-						</Button>
-						{date_pickup}
-					</FormControl>
-					
-					
-					<DatePicker
-						showCaption={true}
-						value={delivery_date.time}
-						isOpen={delivery_date.isOpen}
-						onSelect={handleSelectPicker}
-						onCancel={handleCancelPicker} 
-						confirmText={'Ok'}
-						cancelText = {'Batal'}
+				/>
+			)}
 
-					/>
-				</div>
-				
-				
-				<Button variant="contained" 
-					fullWidth 
-					onClick={handlePay}
-					disabled={!sk}
-				>
-					CHECKOUT
-				</Button>
-				
-				
-				<FormGroup>
-					<FormControlLabel control={<Checkbox  checked={sk} onClick={handleSK} disabled={delivery_date.isOpen} />} label="Saya setuju" />
-				</FormGroup>
-			</div>
+			
 
 			<Payment 
 				open={payment}
@@ -555,6 +386,8 @@ export default function Cart() {
 				ms_delivery = {ms_delivery.filter(x=>x.ms_delivery_id==ms_delivery_selected)[0]}
 				pickup={menu.store.store_address}
 				date_pickup={date_pickup}
+				onPayment={(token)=>handleOnPayment(token)}
+				
 			/>
 			
 		</React.Fragment>

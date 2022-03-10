@@ -57,6 +57,8 @@ code {
 }
 
 .item-title {
+	margin-top: 1rem;
+	font-size: larger;
 	font-weight: bold;
 }
 
@@ -274,9 +276,66 @@ code {
 	font-size: large;
 	font-weight: bold;
 	text-transform: uppercase;
-	margin-bottom: 1rem;
+	/* margin-bottom: 1rem; */
 }
 
 .image-gallery-image {
 	height: 400px !important;
-   }
+}
+
+.product-container {
+	margin: 1rem;
+}
+.product-title {
+	margin-top: 1rem;
+	font-size: larger;
+	font-weight: bold;
+}
+
+.label-info {
+	font-size: 0.7rem;
+	font-style: italic;
+}
+
+.item-full-desc {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+
+}
+
+.item-full-desc-sub {
+	font-size: 0.9rem;
+	font-style: italic;
+	margin-bottom: 1rem;
+}
+.label-title {
+	
+	font-size: 0.8rem;
+	font-weight: bold;
+}
+
+.item-sub-title {
+	font-size: large;
+	font-weight: bold;
+}
+
+.btn {
+	background-color: #199319;
+	color: white;
+	padding: 15px 25px;
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	margin-bottom: 5rem;
+}
+
+.item-link {
+	margin-bottom: 20px;
+}
+
+.sub-title-page {
+	font-size: .8rem;
+	font-weight: bold;
+	font-style: italic;
+}

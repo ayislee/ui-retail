@@ -2,6 +2,7 @@ import React, {useEffect,useState} from 'react'
 import {useParams} from "react-router-dom"
 import {Api} from "../components/Api"
 import {ApiReq} from "../components/ApiServer"
+import Button from '@mui/material/Button';
 
 export default function HistoryDetail() {
 	
@@ -39,6 +40,7 @@ export default function HistoryDetail() {
 			{transaction?(
 				<div style={{margin:"1rem"}}>
 					<div className="title-page">Transaksi</div>
+					<div className="sub-title-page">{transaction?.transaction_number}</div>
 					{
 					transaction.transaction_detail.map((data,index)=>(
 						<div className="i-data-container" key={index}>
@@ -80,7 +82,70 @@ export default function HistoryDetail() {
 						{new Intl.NumberFormat('IDR').format(parseInt(transaction?.transaction_total_amount))}
 						</div>
 					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Metoda Pembayaran</div>
+						<div className="total-payment-value">
+							{transaction?.ms_payment.ms_payment_name}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Status Pembayaran</div>
+						<div className="total-payment-value">
+							{transaction?.transaction_approve_status_name}
+						</div>
+					</div>
+					
+
+					<div className="total-payment">
+						<div className="total-payment-label">Metoda Pengiriman</div>
+						<div className="total-payment-value">
+							{transaction?.ms_delivery.ms_delivery_name}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Alamat Pengiriman</div>
+						<div className="total-payment-value">
+							{transaction?.store.store_address}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Rencana Pengambilan</div>
+						<div className="total-payment-value">
+							{transaction?.transaction_delivery_expected_datetime}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Status Pengiriman/Pengambilan</div>
+						<div className="total-payment-value">
+							{transaction?.transaction_delivery_fulfilled_datetime?`Diterima`:`Belum diterima`}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">Pembeli</div>
+						<div className="total-payment-value">
+							{transaction?.customer_name}
+						</div>
+					</div>
+
+					<div className="total-payment">
+						<div className="total-payment-label">No handphone</div>
+						<div className="total-payment-value">
+							{transaction?.customer_msisdn}
+						</div>
+					</div>
+
+					{transaction.transaction_approve_status==0?(
+						<Button fullWidth variant="contained" size="large">Lakukan Pembayaran</Button>
+					):('')}
+				
 				</div>
+
 			):(
 				<div>Tidak ada transaksi</div>
 			)}
