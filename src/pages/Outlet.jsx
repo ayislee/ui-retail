@@ -9,16 +9,21 @@ import {Link} from 'react-router-dom'
 
 export default function Outlet() {
 	const [stores,setStore] = useState([])
+	const [page,setPage] = useState(1)
+	const [lastPage,setLastPage] = useState(0)
+
 	const retail_data = RetailData()
 	const reloadContent = async () => {
 		const params = {
-			url: Api.COMPANY.url.replace(":company_slug",retail_data.company),
+			url: Api.COMPANY.url.replace(":company_slug",retail_data.company)+'?page='+page,
 			method: Api.COMPANY.method,
 			reqBody: retail_data
 		}
 		const response = await ApiReq(params)
+		console.log('response',response)
 		if(response.success){
 			setStore(response.data)
+			setLastPage(response.data.last_page)
 		}
 	}
 
@@ -30,6 +35,9 @@ export default function Outlet() {
 		console.log('store',stores)
 	},[stores])
 
+	const handlePaginationChange = (event,value) => {
+		setPage(value)
+	}
   	return (
 		<React.Fragment>
 			{/* <div className="page-title">Outlet</div> */}
@@ -49,7 +57,12 @@ export default function Outlet() {
 				}
 			</div>
 			<Stack spacing={2}>
-				<Pagination count={10} variant="outlined" shape="rounded" />
+				<Pagination 
+					count={lastPage} 
+					variant="outlined" 
+					shape="rounded"
+					onChange={handlePaginationChange} 
+				/>
 			</Stack>
 		</React.Fragment>
   	)

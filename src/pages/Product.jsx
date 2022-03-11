@@ -4,7 +4,7 @@ import {Api} from "../components/Api"
 import {ApiReq} from '../components/ApiServer'
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {InitMenu,InitCart,UpdateCart} from '../components/LocalStorage'
+import {InitMenu,InitCart,UpdateCart,InitRetailData} from '../components/LocalStorage'
 import Button from '@mui/material/Button';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
@@ -38,7 +38,12 @@ export default function Product() {
 				}
 
 				// redifine localstorage
-				
+				InitRetailData({
+					company: response.data.store.company.company_slug,
+					outlet: response.data.store.store_slug,
+					company_id: response.data.store.company_id,
+					outlet_id: response.data.store.store_id,
+				})
 
 				set_product_images(img)
 				

@@ -24,6 +24,29 @@ export function RetailData() {
 	return storage
 }
 
+export function InitRetailData(data=null) {
+	let saved
+	if(data !== null){
+		ls.set("retail_data", JSON.stringify(data))
+		saved = ls.get("retail_data")
+		return JSON.parse(saved);
+	
+	}else{
+		const d  = ls.get("retail_data")
+		if(d){
+			const retail_data = {
+				company: '',
+				outlet: '',
+				company_id: '',
+				outlet_id: "",
+			}
+			ls.set('retail_data',JSON.stringify(retail_data))
+		}
+		const saved  = ls.get("retail_data")
+		return JSON.parse(saved);
+	}
+}
+
 export function InitCart() {
 	let data = ls.get("cart_data")
 	if(!data){

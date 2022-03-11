@@ -44,10 +44,16 @@ code {
 	
 	padding-top: 100%;
 }
-.item > a >img {
+.item >img {
 	width: 100%;
 	border-radius: 3%;
 }
+
+.item > a > img {
+	width: 100%;
+	border-radius: 3%;
+}
+
 
 .page-title {
 	padding: 20px;
@@ -176,7 +182,7 @@ code {
 	font-size: .8rem;
 }
 .item-subtotal-value {
-	font-size: 1.2rem;
+	font-size: 1rem;
 	font-weight: bold;
 }
 
@@ -204,6 +210,8 @@ code {
 }
 
 .total-payment-value {
+	font-size: 1rem;
+	font-weight: bold;
 	text-align: right;
 }
 
