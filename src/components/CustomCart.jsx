@@ -315,7 +315,10 @@ export default function CustomCart(props) {
 											key={index} 
 											value={data?.voucher_code}
 											style={{fontSize:".8rem"}}
-										>{data?.voucher_name}</MenuItem>
+										>
+											<div className='voucher-title'>{data?.voucher_name}</div>
+											
+										</MenuItem>
 									))
 								}
 

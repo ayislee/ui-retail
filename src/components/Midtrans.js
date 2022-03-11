@@ -57,7 +57,7 @@ export default class Midtrans extends PureComponent {
 			this.state.token,
 			/** @todo options **/
 		)	
-	}, 100);
+	}, 1000);
 
 
   }
