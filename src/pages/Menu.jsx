@@ -15,6 +15,8 @@ import axios from 'axios'
 import {Api} from '../components/Api'
 import {ApiReq} from '../components/ApiServer'
 import { MainContext } from "../App";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -31,6 +33,7 @@ export default function Menu() {
 	const [categories,setCategory] = useState([])
 	const [products,setProduct] = useState([])
 	const [dataMenu,setDataMenu] = useState()
+	const [openAlert,setOpenAlert] = useState(false)
 
   	const handleChange = (event, newValue) => {
     	setValue(newValue);
@@ -112,9 +115,18 @@ export default function Menu() {
 			payload: lastCart,
 		});
 		
+		setOpenAlert(true);
 		
 		
 	}
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+		  return;
+		}
+	
+		setOpenAlert(false);
+	};
 
 	return (
 
@@ -178,6 +190,12 @@ export default function Menu() {
 					))
 				}
 			</div>
+
+			<Snackbar open={openAlert} autoHideDuration={3000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+					Produk telah dimasukan ke keranjang
+				</Alert>
+			</Snackbar>
 
 		</Box>
 	)

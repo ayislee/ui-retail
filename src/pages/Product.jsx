@@ -7,6 +7,8 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import {InitMenu,InitCart,UpdateCart,InitRetailData} from '../components/LocalStorage'
 import Button from '@mui/material/Button';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 import { MainContext } from "../App";
 
@@ -16,6 +18,7 @@ export default function Product() {
 	const [product,set_product] = useState()
 	const [product_images,set_product_images] = useState([])
 	const [menu,set_menu] = useState(InitMenu())
+	const [openAlert,setOpenAlert] = useState(false)
 	
 	const reloadData = async () => {
 		const params = {
@@ -80,10 +83,18 @@ export default function Product() {
 			type: "BADGE",
 			payload: lastCart,
 		});
-		
-		
-		
+
+		setOpenAlert(true);
 	}
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+		  return;
+		}
+	
+		setOpenAlert(false);
+	};
+
 	return (
 		<React.Fragment>
 			{product?(
@@ -147,6 +158,12 @@ export default function Product() {
 
 
 			):(``)}
+
+			<Snackbar open={openAlert} autoHideDuration={3000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+					Produk telah dimasukan ke keranjang
+				</Alert>
+			</Snackbar>
 		</React.Fragment>
 	)
 }

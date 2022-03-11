@@ -92,8 +92,11 @@ export default function HistoryDetail() {
 
 					<div className="total-payment">
 						<div className="total-payment-label">Status Pembayaran</div>
-						<div className="total-payment-value">
-							{transaction?.transaction_approve_status_name}
+						<div className={
+							transaction.transaction_approve_status===0?`status-pending`:
+							transaction.transaction_approve_status===1?`status-processing`:
+							transaction.transaction_approve_status===2?`status-verified`:
+							transaction.transaction_approve_status===3?`status-approved`:`status-rejected`}>{transaction?.transaction_approve_status_name}
 						</div>
 					</div>
 					
@@ -140,14 +143,14 @@ export default function HistoryDetail() {
 						</div>
 					</div>
 
-					{transaction.transaction_approve_status==0?(
-						<Button fullWidth variant="contained" size="large">Lakukan Pembayaran</Button>
+					{transaction.transaction_approve_status==0?(''
+						// <Button fullWidth variant="contained" size="large">Lakukan Pembayaran</Button>
 					):('')}
 				
 				</div>
 
 			):(
-				<div>Tidak ada transaksi</div>
+				<div className='title-page'>Tidak ada transaksi</div>
 			)}
 		</React.Fragment>
 		

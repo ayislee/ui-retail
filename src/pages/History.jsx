@@ -45,7 +45,7 @@ export default function History() {
 	}
     return (
        <React.Fragment>
-           <div className="history-title">Riwayat pembelanjaan</div>
+           <div className="page-title">Riwayat pembelanjaan</div>
            
             {
                    history.map((data,index)=>(
@@ -61,7 +61,8 @@ export default function History() {
                                     data.transaction_approve_status===0?`status-pending`:
                                     data.transaction_approve_status===1?`status-processing`:
                                     data.transaction_approve_status===2?`status-verified`:
-                                    data.transaction_approve_status===3?`status-approved`:`status-rejected`}>{data.transaction_approve_status_name}</div>
+                                    data.transaction_approve_status===3?`status-approved`:`status-rejected`}>{data.transaction_approve_status_name}
+                                </div>
                             </div>
                             <div className="history-detail">
                                 <div className="history-shoping-label">Kode Transaksi</div>

@@ -264,17 +264,18 @@ code {
 	vertical-align: middle;
 	color: #b5a200;
 	font-weight: bold; 
+	text-align: right;
 }
 
 .status-approved {
-	text-align: center;
+	text-align: right;
 	vertical-align: middle;
 	color: #0eb933;
 	font-weight: bold; 
 }
 
 .status-rejected {
-	text-align: center;
+	text-align: right;
 	vertical-align: middle;
 	color: #8d1332bd;
 	font-weight: bold; 
