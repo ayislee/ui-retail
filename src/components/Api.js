@@ -8,7 +8,7 @@ export const Api = {
 		method: 'get'
 	},
 	TRX: {
-		url: '/transaction/retail',
+		url: '/transaction/retail/order',
 		method: 'post'
 	},
 	HISTORY: {
