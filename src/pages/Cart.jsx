@@ -21,6 +21,8 @@ import DatePicker from 'react-mobile-datepicker';
 import CustomCart from '../components/CustomCart'
 
 
+
+
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
 // import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // import DateTimePicker from '@mui/lab/DateTimePicker';
@@ -78,6 +80,11 @@ export default function Cart() {
 
 	const [afterPay,setAfterPay] = useState(false)
 
+	const [yOffset,SetYOffset] = useState(window.pageYOffset)
+	
+	useEffect(()=>{
+		console.log("yOffset",yOffset)
+	},[yOffset])
 	
 	useEffect(()=>{
 		let m

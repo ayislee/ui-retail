@@ -8,6 +8,8 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import LiquorIcon from '@mui/icons-material/Liquor';
 import Badge from '@mui/material/Badge';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+
 import { 
 	Button, 
 	AppBar,
@@ -44,6 +46,8 @@ const initialState = {
 	badge: GetBadge(),
 	outlet_slack: '',
 };  
+
+
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -103,6 +107,7 @@ export default function App() {
 	const [title,setTitle] = useState('HOME')
 	const [cart,setCart] = useState(InitCart())
 	const [badge,setBudge] = useState(0)
+	const [hideOnScroll, setHideOnScroll] = useState(true)
 
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -110,6 +115,23 @@ export default function App() {
 	const toggleSlider = () => {
 		setOpen(!open);
 	}
+
+	useScrollPosition(
+		({ prevPos, currPos }) => {
+			console.log('currPos.y',currPos.y)
+		  const isShow = currPos.y > prevPos.y
+		  if (isShow !== hideOnScroll) setHideOnScroll(isShow)
+		},
+		[hideOnScroll],
+		false,
+		false,
+		500
+	)
+
+	useEffect(()=>{
+		console.log('hideScroll',hideOnScroll)
+		
+	},[hideOnScroll])
 	
 	useEffect(() => {
 		console.log('cart',cart)

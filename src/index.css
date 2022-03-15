@@ -352,3 +352,7 @@ code {
 .voucher-title {
 	font-weight: bold;
 }
+
+.datepicker-modal {
+	position: fixed !important;
+}
