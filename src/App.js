@@ -108,7 +108,7 @@ export default function App() {
 	const [cart,setCart] = useState(InitCart())
 	const [badge,setBudge] = useState(0)
 	const [hideOnScroll, setHideOnScroll] = useState(true)
-
+   
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -118,8 +118,8 @@ export default function App() {
 
 	useScrollPosition(
 		({ prevPos, currPos }) => {
-			console.log('currPos.y',currPos.y)
-		  const isShow = currPos.y > prevPos.y
+			// console.log('currPos.y',currPos.y)
+		  const isShow = currPos.y < -66
 		  if (isShow !== hideOnScroll) setHideOnScroll(isShow)
 		},
 		[hideOnScroll],
@@ -129,17 +129,17 @@ export default function App() {
 	)
 
 	useEffect(()=>{
-		console.log('hideScroll',hideOnScroll)
+		// console.log('hideScroll',hideOnScroll)
 		
 	},[hideOnScroll])
 	
 	useEffect(() => {
-		console.log('cart',cart)
-		console.log('state.badge',state.badge)
+		// console.log('cart',cart)
+		// console.log('state.badge',state.badge)
 	}, [])
 
 	useEffect(() => {
-		console.log('state',state)
+		// console.log('state',state)
 		
 	}, [state])
 
@@ -186,7 +186,7 @@ export default function App() {
 			>
 				<CssBaseline />
 				<Box component="nav" style={{position: "relative !important"}}>
-					<AppBar position="static">
+					<AppBar position='static'>
 						<Toolbar className={classes.toolbarContainer}>
 							<IconButton onClick={toggleSlider}>
 								<Menu />

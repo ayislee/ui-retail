@@ -21,7 +21,7 @@ export const ApiReq = async (params,pub=true) => {
 		timeout: process.env.REACT_APP_REQUEST_TIMEOUT,
 	}
 
-	console.log('config.baseURL',config.baseURL)
+	// console.log('config.baseURL',config.baseURL)
 	let response 
 	
 
@@ -30,13 +30,13 @@ export const ApiReq = async (params,pub=true) => {
 		switch (params.method) {
 
 			case 'get':
-				console.log("get")
+				// console.log("get")
 				response =  await axios.get(params.url,config)
 				return response.data
 				break;
 
 			case 'post':
-				console.log("post")
+				// console.log("post")
 				response =  await axios.post(params.url,params.reqBody,config)
 				return response.data
 				break;	

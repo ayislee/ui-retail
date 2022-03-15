@@ -356,3 +356,9 @@ code {
 .datepicker-modal {
 	position: fixed !important;
 }
+
+.history-price {
+	font-weight: bold;
+	color: #199319;
+	font-size: 1.5rem;
+}

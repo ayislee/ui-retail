@@ -21,7 +21,7 @@ export default function History() {
 		}
 
 		const response = await ApiReq(params)
-        console.log("response",response)
+        // console.log("response",response)
 		if(response.success){
 			setHistory(response.data)
 			setLastPage(response.data.last_page)
@@ -37,7 +37,7 @@ export default function History() {
     },[])
 
     useEffect(()=> {
-        console.log('history',history)
+        // console.log('history',history)
     },[history])
 
 	const handlePaginationChange = (event,value) => {
@@ -70,7 +70,7 @@ export default function History() {
                             </div>
                             <div className="history-detail">
                                 <div className="history-shoping-label">Total Belanja</div>
-                                <div className="history-date">{data.transaction_total_amount}</div>
+                                <div className="history-price">Rp. {new Intl.NumberFormat('IDR').format(data.transaction_total_amount)}</div>
                             </div>
 							</Link>
                             

@@ -3,16 +3,11 @@ import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu,InitHistory,InitCustomer} from '../components/LocalStorage'
+import {InitCart, UpdateCart} from '../components/LocalStorage'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import { MainContext } from "../App";
-import {Api} from "../components/Api";
-import {ApiReq} from "../components/ApiServer"
-import axios from 'axios'
-import Payment from '../components/Payment';
-import Midtrans from '../components/Midtrans' 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';

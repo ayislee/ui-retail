@@ -1,24 +1,13 @@
 import React,{useState,useEffect,useContext} from 'react'
-import TextField from '@mui/material/TextField';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import {RetailData,InitCart, UpdateCart, ClearCart, InitMenu,InitHistory,InitCustomer} from '../components/LocalStorage'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import {RetailData,InitCart,InitMenu,InitCustomer} from '../components/LocalStorage'
 import Button from '@mui/material/Button';
-import Input from '@mui/material/Input';
-import { MainContext } from "../App";
 import {Api} from "../components/Api";
 import {ApiReq} from "../components/ApiServer"
-import axios from 'axios'
 import Payment from '../components/Payment';
 import Midtrans from '../components/Midtrans' 
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import DatePicker from 'react-mobile-datepicker';
-import CustomCart from '../components/CustomCart'
+import CustomCart from '../components/CustomCart';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -77,14 +66,12 @@ export default function Cart() {
 	})
 
 	const [date_pickup,set_date_pickup] = useState("")
-
 	const [afterPay,setAfterPay] = useState(false)
-
-	const [yOffset,SetYOffset] = useState(window.pageYOffset)
 	
-	useEffect(()=>{
-		console.log("yOffset",yOffset)
-	},[yOffset])
+	const [openAlert,setOpenAlert] = useState(false)
+	const [alertMessage,setAlertMessage] = useState('')
+	
+
 	
 	useEffect(()=>{
 		let m
@@ -137,7 +124,7 @@ export default function Cart() {
 
 		const vresponse = await ApiReq(vparams)
 		if(vresponse.success){
-			console.log("voucher",vresponse.data)
+			// console.log("voucher",vresponse.data)
 			setVoucher(vresponse.data.filter(x=>x.voucher_stock_quantity>0))
 		}
 			
@@ -145,7 +132,7 @@ export default function Cart() {
 	}
 
 	useEffect(()=>{
-		console.log("date",delivery_date.time)
+		// console.log("date",delivery_date.time)
 		// setCart(InitCart())
 		if(carts.length == 0){
 			window.location.href="/menus"
@@ -155,11 +142,11 @@ export default function Cart() {
 	},[])
 
 	useEffect(()=>{
-		console.log("total",total)
+		// console.log("total",total)
 	},[total])
 
 	useEffect(()=>{
-		console.log('ms_payment',ms_payment)
+		// console.log('ms_payment',ms_payment)
 	},[ms_payment])
 	
 	useEffect(()=>{
@@ -168,7 +155,7 @@ export default function Cart() {
 	},[carts])
 
 	useEffect(()=>{
-		console.log("menu",menu)
+		// console.log("menu",menu)
 	},[menu])
 	
 	
@@ -180,7 +167,7 @@ export default function Cart() {
 	
 
 	const handlePay = async () => {
-		console.log('carts',carts)
+		// console.log('carts',carts)
 		const items = []
 		for (const i of carts) {
 			items.push({
@@ -190,7 +177,7 @@ export default function Cart() {
 				note: i.note
 			})
 		}
-		console.log('items',items)
+		// console.log('items',items)
 
 		const params = {
 			url: Api.TRX.url,
@@ -208,9 +195,9 @@ export default function Cart() {
 			}
 		}
 		const response = await ApiReq(params)
-		console.log('response',response)
+		// console.log('response',response)
 		if(response.success){
-			console.log('env',process.env.REACT_APP_PAYMENT)
+			// console.log('env',process.env.REACT_APP_PAYMENT)
 			
 			setTrxData(response.data)
 			setItemdata(response.data.current_order)
@@ -224,16 +211,20 @@ export default function Cart() {
 
 
 			
+		}else{
+			// console.log('response')
+			setAlertMessage(response.error)
+			setOpenAlert(true)
 		}
 
 	} 
 
 	useEffect(()=>{
-		console.log('itemData',itemData)
+		// console.log('itemData',itemData)
 	},[itemData])
 
 	useEffect(()=>{
-		console.log("customer",customer)
+		// console.log("customer",customer)
 	},[customer])
 	
 
@@ -249,7 +240,7 @@ export default function Cart() {
 	}
 
 	const handleMSPayment = (event) => {
-		console.log(event.target.value)
+		// console.log(event.target.value)
 		set_ms_payment_selected(event.target.value)
 
 	}
@@ -268,7 +259,7 @@ export default function Cart() {
 			time: value,
 			isOpen: false
 		})
-		console.log('time')
+		// console.log('time')
 	} 
 	
 	const handleCancelPicker = () => {
@@ -284,7 +275,7 @@ export default function Cart() {
 	}
 
 	const handleOnPayment = (token) => {
-		console.log(token)
+		// console.log(token)
 		setToken(token)
 		setPayment(false)
 		setAfterPay(true)
@@ -322,6 +313,13 @@ export default function Cart() {
 	const handlePayClose = () =>{
 		alert("Close")
 	}
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+		  return;
+		}
+		setOpenAlert(false);
+	};
 
 	return (
 		
@@ -397,6 +395,11 @@ export default function Cart() {
 				
 			/>
 			
+			<Snackbar open={openAlert} autoHideDuration={3000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+					{alertMessage}
+				</Alert>
+			</Snackbar>
 		</React.Fragment>
 	)
 }

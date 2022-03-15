@@ -65,11 +65,11 @@ export default function Menu() {
 	},[])
 
 	useEffect(()=>{
-		console.log('dataMenu',dataMenu)
+		// console.log('dataMenu',dataMenu)
 	},[dataMenu])
 
 	useEffect(()=>{
-		console.log('menu',menu)
+		// console.log('menu',menu)
 		setCategory(Object.keys(menu))
 	},[menu])
 
@@ -96,7 +96,7 @@ export default function Menu() {
 
 	const handleAddCart = (p) => {
 		var lastCart = InitCart()
-		console.log('lastCart1',lastCart)
+		// console.log('lastCart1',lastCart)
 		const indexItem = lastCart.findIndex(x => x.item_id == p.item_id)
 		if(indexItem>=0){
 			lastCart[indexItem].quantity++
@@ -108,7 +108,7 @@ export default function Menu() {
 
 		lastCart = UpdateCart(lastCart)
 
-		console.log('lastCart2',lastCart)
+		// console.log('lastCart2',lastCart)
 
 		dispatch({
 			type: "BADGE",

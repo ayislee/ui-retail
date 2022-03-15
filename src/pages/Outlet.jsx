@@ -20,7 +20,7 @@ export default function Outlet() {
 			reqBody: retail_data
 		}
 		const response = await ApiReq(params)
-		console.log('response',response)
+		// console.log('response',response)
 		if(response.success){
 			setStore(response.data)
 			setLastPage(response.data.last_page)
@@ -32,7 +32,7 @@ export default function Outlet() {
 	},[])
 
 	useEffect(() => {
-		console.log('store',stores)
+		// console.log('store',stores)
 	},[stores])
 
 	const handlePaginationChange = (event,value) => {

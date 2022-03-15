@@ -10,7 +10,7 @@ export default function HistoryDetail() {
 	const {transaction_number} = useParams()
 	const [transaction,setTransaction] = useState()
 
-	console.log("param",transaction_number)
+	// console.log("param",transaction_number)
 
 	const reloadData = async () => {
 		const params = {
@@ -20,13 +20,13 @@ export default function HistoryDetail() {
 
 		const response = await ApiReq(params)
 		if(response.success){
-			console.log('response',response.data)
+			// console.log('response',response.data)
 			setTransaction(response.data)
 		}
 	}
 
 	useEffect(()=>{
-		console.log('transaction',transaction)
+		// console.log('transaction',transaction)
 	},[transaction])
 
 	useEffect(()=>{

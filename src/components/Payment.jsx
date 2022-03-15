@@ -42,7 +42,7 @@ export default function Payment(props) {
 			})
 		}
 
-		console.log('props',props)
+		// console.log('props',props)
 
 		const params = {
 			url: Api.TRX.url,
@@ -61,7 +61,7 @@ export default function Payment(props) {
 
 		const response = await ApiReq(params)
 		if(response.success){
-			console.log("response",response)
+			// console.log("response",response)
 			if(response.token){
 				props.onPayment(response.token)
 			}else{
@@ -79,7 +79,7 @@ export default function Payment(props) {
 		if(token !== null){
 			set_loadMidtrans(true)
 		}
-		console.log('token',token)	
+		// console.log('token',token)	
 	},[token])
 
   	return (
