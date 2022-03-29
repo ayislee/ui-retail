@@ -296,7 +296,7 @@ export default function Menu() {
 
 						
 							<ListItem button>
-								<ListItemText primary={category} secondary="Titania" onClick={()=>handleSelectCategory(index)}/>
+								<ListItemText primary={category} onClick={()=>handleSelectCategory(index)}/>
 							</ListItem>
 							<Divider />
 						  </React.Fragment>
