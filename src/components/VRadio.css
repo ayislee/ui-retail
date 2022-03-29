@@ -1,0 +1,7 @@
+.vcheckbox > input[type="radio"] {
+    display: none;
+}
+ 
+input[type="radio"]:checked + label {
+    border: 1px solid red;
+}

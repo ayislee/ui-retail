@@ -8,6 +8,7 @@ import Cart from "../pages/Cart"
 import History from "../pages/History"
 import Company from "../components/Company"
 import HistoryDetail from "../pages/HistoryDetail"
+import TestPage from "../pages/TestPage"
 
 
 export default function Router() {
@@ -24,6 +25,7 @@ export default function Router() {
 			<Route path="history" element={<History />} />
 			<Route path="/company/:company_slug/:store_slug" element={<Company />} />
 			<Route path="/history-detail/:transaction_number" element={<HistoryDetail />} />
+			<Route path="/test-page" element={<TestPage />} />
 		</Routes>
 	)
 }

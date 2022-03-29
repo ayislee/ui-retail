@@ -1,4 +1,5 @@
 import React,{useState,useEffect,useContext} from 'react'
+import { MainContext } from "../App";
 import {RetailData,InitCart,InitMenu,InitCustomer} from '../components/LocalStorage'
 import Button from '@mui/material/Button';
 import {Api} from "../components/Api";
@@ -21,7 +22,7 @@ import Alert from '@mui/material/Alert';
 
 
 export default function Cart() {
-	
+	const { state, dispatch } = useContext(MainContext);
 	const [carts,setCart] = useState(InitCart())
 	const [total,setTotal] = useState(0)
 	
@@ -79,7 +80,11 @@ export default function Cart() {
 		let h
 		let mi
 		let s
-		m = delivery_date.time.getMonth()<10? `0`+ delivery_date.time.getMonth():delivery_date.time.getMonth() 
+
+		console.log('delivery_date.time',delivery_date.time.getMonth())
+
+		m = delivery_date.time.getMonth()+1<10? `0`+ (delivery_date.time.getMonth()+1):delivery_date.time.getMonth()+1
+		console.log('m',m)
 		d = delivery_date.time.getDate()<10? `0`+ delivery_date.time.getDate():delivery_date.time.getDate()
 		h = delivery_date.time.getHours()<10? `0`+ delivery_date.time.getHours():delivery_date.time.getHours()
 		mi = delivery_date.time.getMinutes()<10? `0`+ delivery_date.time.getMinutes():delivery_date.time.getMinutes()
@@ -127,6 +132,24 @@ export default function Cart() {
 			// console.log("voucher",vresponse.data)
 			setVoucher(vresponse.data.filter(x=>x.voucher_stock_quantity>0))
 		}
+
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "Keranjang"
+			}
+		});
+
+		console.log('retail_data',retail_data)
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address	
+			},
+		})
 			
 		
 	}

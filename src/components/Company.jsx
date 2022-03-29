@@ -27,10 +27,14 @@ export default function Company() {
 		if(response.success){
 			console.log("response",response.data)
 			const retail_data = {
-				company: response.data.store.company.company_slug,
-				outlet: response.data.store.store_slug,
 				company_id: response.data.store.company_id,
+				company: response.data.store.company.company_slug,
+				company_name: response.data.store.company.company_name,
 				outlet_id: response.data.store.store_id,
+				outlet: response.data.store.store_slug,
+				outlet_logo: response.data.store.store_logo,
+				outlet_name: response.data.store.store_name,
+				outlet_address: response.data.store.store_address,
 			}
 
 			console.log("retail_data",retail_data)

@@ -9,10 +9,14 @@ export function RetailData() {
 		
 	}else{
 		const retail_data = {
-			company: '',
-			outlet: '',
 			company_id: '',
-			outlet_id: ''
+			company: '',
+			company_name: '',
+			outlet_id: "",
+			outlet: '',
+			outlet_logo: '',
+			outlet_name: '',
+			outlet_address: ''
 		}
 		ls.set("retail_data", JSON.stringify(retail_data));
 		saved = ls.get("retail_data") 
@@ -35,10 +39,16 @@ export function InitRetailData(data=null) {
 		const d  = ls.get("retail_data")
 		if(d){
 			const retail_data = {
-				company: '',
-				outlet: '',
 				company_id: '',
+				company: '',
+				company_name: '',
 				outlet_id: "",
+				outlet: '',
+				outlet_logo: '',
+				outlet_name: '',
+				outlet_address: ''
+				
+				
 			}
 			ls.set('retail_data',JSON.stringify(retail_data))
 		}

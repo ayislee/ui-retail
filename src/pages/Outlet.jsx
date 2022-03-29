@@ -1,4 +1,5 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect,useState,useContext} from 'react';
+import { MainContext } from "../App";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import {RetailData} from '../components/LocalStorage';
@@ -8,9 +9,11 @@ import {Link} from 'react-router-dom'
 
 
 export default function Outlet() {
+	const { state, dispatch } = useContext(MainContext);
 	const [stores,setStore] = useState([])
 	const [page,setPage] = useState(1)
 	const [lastPage,setLastPage] = useState(0)
+	
 
 	const retail_data = RetailData()
 	const reloadContent = async () => {
@@ -28,6 +31,22 @@ export default function Outlet() {
 	}
 
 	useEffect(()=>{
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "OUTLET"
+			}
+		});
+
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address	
+			},
+		})
 		reloadContent()
 	},[])
 
@@ -41,11 +60,11 @@ export default function Outlet() {
   	return (
 		<React.Fragment>
 			{/* <div className="page-title">Outlet</div> */}
-			<div className="container-2-column">
+			<div className="container-2c">
 				{
 					stores.map((store,index)=>(
 						<Link to={`/company/${retail_data.company}/${store.store_slug}`} key={index} style={{textDecoration:"none",color:"black"}}>
-							<div className="item">
+							<div className="item-2c">
 							<img src={store.store_image[0]} alt="" />
 							
 							<div className="item-title">{store.store_name}</div>

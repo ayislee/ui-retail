@@ -73,6 +73,23 @@ const reducer = (state, action) => {
 				...state,
 				badge: cbadge,
 			};
+		case "PROFILE":
+			console.log(action)
+			return {
+				...state,
+				profile: {
+					logo: action.payload.logo,
+					company: action.payload.company,
+					store: action.payload.store,
+					address: action.payload.address
+				}
+								
+			}
+		case "TITLE":
+			return {
+				...state,
+				title: action.payload.title
+			}
 		default:
 			return state;
 	}
@@ -108,6 +125,14 @@ export default function App() {
 	const [cart,setCart] = useState(InitCart())
 	const [badge,setBudge] = useState(0)
 	const [hideOnScroll, setHideOnScroll] = useState(true)
+	const [profile,setProfile] = useState({
+		logo: "",
+		company: "",
+		store: "",
+		address: ""
+	})
+	
+
    
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -139,8 +164,7 @@ export default function App() {
 	}, [])
 
 	useEffect(() => {
-		// console.log('state',state)
-		
+		console.log('state',state)	
 	}, [state])
 
 	
@@ -191,7 +215,8 @@ export default function App() {
 							<IconButton onClick={toggleSlider}>
 								<Menu />
 							</IconButton>
-							<Typography component="div" sx={{ flexGrow: 1 }}>{title.toUpperCase()} </Typography>
+							<Typography component="div" sx={{ flexGrow: 1 }}>{state?.title?.toUpperCase()}  </Typography>
+
 							<div>
 								{
 								state.badge>0?(
@@ -230,6 +255,16 @@ export default function App() {
 						</Toolbar>
 					</AppBar>
 					
+					<div className="store-profile-container">
+						<div className="profile-logo">
+							<img src={state?.profile?.logo} alt={state?.profile?.logo}/>
+						</div>
+						<div className="profile-name-container">
+							<div className="profile-company">{state?.profile?.company} ({state?.profile?.store})</div>
+							<div className="profile-address">{state?.profile?.address}</div>
+						</div>
+					
+					</div>
 					<Drawer open={open} anchor="right" variant="persistent" onClose={toggleSlider} >
 						{sideList()}
 					</Drawer>

@@ -1,18 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState,useContext} from 'react'
+import { MainContext } from "../App";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {ApiReq} from '../components/ApiServer'
 import {Api} from '../components/Api'
-import {InitCustomer} from '../components/LocalStorage'
+import {InitCustomer,RetailData} from '../components/LocalStorage'
 import Pagination from '@mui/material/Pagination';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 import {Link} from 'react-router-dom'
 export default function History() {
+	const { state, dispatch } = useContext(MainContext);
     const [history,setHistory] = useState([])
 	const [page,setPage] = useState(1)
 	const [lastPage,setLastPage] = useState(0)
 	const [customer,setCustomer] = useState(InitCustomer())
+	const [retail_data,set_retail_data] = useState(RetailData())
     
 	const reloadData = async () => {
 		const params = {
@@ -21,7 +24,7 @@ export default function History() {
 		}
 
 		const response = await ApiReq(params)
-        // console.log("response",response)
+        console.log("response",response)
 		if(response.success){
 			setHistory(response.data)
 			setLastPage(response.data.last_page)
@@ -31,6 +34,24 @@ export default function History() {
         }
 	}
     useEffect(()=>{
+
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "RIWAYAT PEMBELANJAAN"
+			}
+		});
+
+		console.log("retail_data",retail_data)
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address	
+			},
+		})
 		reloadData()
 		
 
@@ -66,7 +87,7 @@ export default function History() {
                             </div>
                             <div className="history-detail">
                                 <div className="history-shoping-label">Kode Transaksi</div>
-                                <div className="history-date">{data.transaction_number}</div>
+                                <div className="history-date">{data.transaction_id}</div>
                             </div>
                             <div className="history-detail">
                                 <div className="history-shoping-label">Total Belanja</div>

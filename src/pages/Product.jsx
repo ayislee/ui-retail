@@ -4,7 +4,7 @@ import {Api} from "../components/Api"
 import {ApiReq} from '../components/ApiServer'
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {InitMenu,InitCart,UpdateCart,InitRetailData} from '../components/LocalStorage'
+import {InitMenu,InitCart,UpdateCart,InitRetailData,RetailData} from '../components/LocalStorage'
 import Button from '@mui/material/Button';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Snackbar from '@mui/material/Snackbar';
@@ -19,6 +19,7 @@ export default function Product() {
 	const [product_images,set_product_images] = useState([])
 	const [menu,set_menu] = useState(InitMenu())
 	const [openAlert,setOpenAlert] = useState(false)
+	const [retail_data,set_retail_data] = useState(RetailData())
 	
 	const reloadData = async () => {
 		const params = {
@@ -42,10 +43,14 @@ export default function Product() {
 
 				// redifine localstorage
 				InitRetailData({
-					company: response.data.store.company.company_slug,
-					outlet: response.data.store.store_slug,
 					company_id: response.data.store.company_id,
+					company: response.data.store.company.company_slug,
+					company_name: response.data.store.company.company_name,
 					outlet_id: response.data.store.store_id,
+					outlet: response.data.store.store_slug,
+					outlet_logo: response.data.store.store_logo,
+					outlet_name: response.data.store.store_name,
+					outlet_address: response.data.store.store_address,
 				})
 
 				set_product_images(img)
@@ -59,6 +64,22 @@ export default function Product() {
 	}
 
 	useEffect(()=>{
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "PRODUK"
+			}
+		});
+
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address	
+			},
+		})
 		console.log('product_slug',product_slug)
 		reloadData()
 	},[])

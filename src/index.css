@@ -12,11 +12,14 @@ code {
     monospace;
 }
 
+
 .body-content { 
-	max-width: 500px;
+	max-width: 600px;
   	margin: auto;
   	background: white;
 }  
+
+
 
 .css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
 	position: fixed !important;
@@ -25,7 +28,7 @@ code {
 
 .container-2-column {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr;
 	
 	padding:  10px;
 	grid-row-gap: 20px;
@@ -44,6 +47,19 @@ code {
 	
 	padding-top: 100%;
 }
+.item {
+	display: grid;
+	grid-template-columns: 5fr 1fr;
+	
+	padding:  10px;
+	grid-row-gap: 20px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+}
+
 .item >img {
 	width: 100%;
 	border-radius: 3%;
@@ -81,6 +97,8 @@ code {
 }
 
 .item-product {
+	display: grid;
+	grid-template-columns: 1fr;
 	font-weight: normal;
 }
 .price {
@@ -361,4 +379,50 @@ code {
 	font-weight: bold;
 	color: #199319;
 	font-size: 1.5rem;
+}
+
+.store-profile-container{
+	display: grid;
+	grid-template-columns: .2fr 1fr;
+	
+	padding:  10px;
+	grid-row-gap: 10px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+}
+
+.profile-logo > img {
+	width: 100%;
+	border-radius: 5%;
+}
+
+.profile-company {
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.profile-address {
+	font-size: .8rem;
+	font-style: italic;
+}
+
+.container-2c {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	
+	padding:  10px;
+	grid-row-gap: 10px;
+	column-gap: 20px;
+
+    justify-items: stretch;
+    align-items: stretch;
+	justify-content: space-between;
+}
+
+.item-2c > img {
+	width : 100%;
+	
+	
 }

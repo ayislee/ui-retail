@@ -1,4 +1,6 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect,useState,useContext} from 'react'
+import { MainContext } from "../App";
+import {RetailData} from '../components/LocalStorage'
 import {useParams} from "react-router-dom"
 import {Api} from "../components/Api"
 import {ApiReq} from "../components/ApiServer"
@@ -9,6 +11,8 @@ export default function HistoryDetail() {
 	
 	const {transaction_number} = useParams()
 	const [transaction,setTransaction] = useState()
+	const { state, dispatch } = useContext(MainContext);
+	const [retail_data,set_retail_data] = useState(RetailData())
 
 	// console.log("param",transaction_number)
 
@@ -30,6 +34,22 @@ export default function HistoryDetail() {
 	},[transaction])
 
 	useEffect(()=>{
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "TRANSAKSI"
+			}
+		});
+
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address	
+			},
+		})
 		reloadData()
 	},[])
 
@@ -40,7 +60,7 @@ export default function HistoryDetail() {
 			{transaction?(
 				<div style={{margin:"1rem"}}>
 					<div className="title-page">Transaksi</div>
-					<div className="sub-title-page">{transaction?.transaction_number}</div>
+					<div className="sub-title-page">{transaction?.transaction_id}</div>
 					{
 					transaction.transaction_detail.map((data,index)=>(
 						<div className="i-data-container" key={index}>
