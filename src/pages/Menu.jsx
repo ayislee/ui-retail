@@ -207,7 +207,18 @@ export default function Menu() {
 									<div className="item-price-discount">Rp. {new Intl.NumberFormat('IDR').format(product.regular_price)}</div>
 									):""}
 								</div>
-								<div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div>
+								{/* <div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div> */}
+								<Button 
+									variant="contained" 
+									size="small" 
+									startIcon={<AddShoppingCartIcon />}
+									// fullWidth
+									sx={{marginBottom:"10px !important"}}
+									onClick={() =>handleAddCart(product)}
+									disabled={product.menu_current_quantity==0}
+								>
+									Masuk Keranjang
+								</Button>
 								
 							</div>
 							<Link to={`/product/${product.menu_slug}`}>
@@ -216,17 +227,7 @@ export default function Menu() {
 								
 								
 								
-								<Button 
-									variant="contained" 
-									size="small" 
-									startIcon={<AddShoppingCartIcon />}
-									fullWidth
-									sx={{marginBottom:"10px !important"}}
-									onClick={() =>handleAddCart(product)}
-									disabled={product.menu_current_quantity==0}
-								>
-									Masuk Keranjang
-								</Button>
+								
 								{/* <Button 
 									variant="outlined" 
 									size="small" 

@@ -81,10 +81,10 @@ export default function Cart() {
 		let mi
 		let s
 
-		console.log('delivery_date.time',delivery_date.time.getMonth())
+		
 
 		m = delivery_date.time.getMonth()+1<10? `0`+ (delivery_date.time.getMonth()+1):delivery_date.time.getMonth()+1
-		console.log('m',m)
+		
 		d = delivery_date.time.getDate()<10? `0`+ delivery_date.time.getDate():delivery_date.time.getDate()
 		h = delivery_date.time.getHours()<10? `0`+ delivery_date.time.getHours():delivery_date.time.getHours()
 		mi = delivery_date.time.getMinutes()<10? `0`+ delivery_date.time.getMinutes():delivery_date.time.getMinutes()

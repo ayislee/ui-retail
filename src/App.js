@@ -260,7 +260,7 @@ export default function App() {
 							<img src={state?.profile?.logo} alt={state?.profile?.logo}/>
 						</div>
 						<div className="profile-name-container">
-							<div className="profile-company">{state?.profile?.company} ({state?.profile?.store})</div>
+							<div className="profile-company">{state?.profile?.store}</div>
 							<div className="profile-address">{state?.profile?.address}</div>
 						</div>
 					

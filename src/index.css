@@ -49,7 +49,7 @@ code {
 }
 .item {
 	display: grid;
-	grid-template-columns: 5fr 1fr;
+	grid-template-columns: 3fr 1fr;
 	
 	padding:  10px;
 	grid-row-gap: 20px;
@@ -61,7 +61,20 @@ code {
 }
 
 .item >img {
-	width: 100%;
+	/* width: 100%;
+	height: 1fr;
+	border-radius: 3%;
+	object-fit: cover; */
+
+	position: absolute; /* Take your picture out of the flow */
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0; /* Make the picture taking the size of it's parent */
+	width: 100%; /* This if for the object-fit */
+	height: 100%; /* This if for the object-fit */
+	object-fit: cover; /* Equivalent of the background-size: cover; of a background-image */
+	object-position: center;
 	border-radius: 3%;
 }
 
@@ -106,12 +119,16 @@ code {
 }
 .item-price {
 	font-weight: bold;
+	font-size: .9rem;
 }
 
 .item-price-discount {
 	font-weight: normal;
 	text-decoration: line-through;
+	font-size: .9rem;
 	padding-left: 1rem;
+	margin-bottom: .5rem;
+	color: red
 }
 .btn-cart {
 	margin-bottom: 1rem !important;
@@ -142,6 +159,7 @@ code {
 .cart-image > img {
 	width: 100%;
 	border-radius: 3%;
+
 }
 
 .c-price {
@@ -327,6 +345,8 @@ code {
 .item-full-desc {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	text-align: justify;
+  	text-justify: inter-word;
 
 }
 
@@ -425,4 +445,8 @@ code {
 	width : 100%;
 	
 	
+}
+
+.product-name {
+	font-weight: bold;
 }
