@@ -304,6 +304,7 @@ export default function CustomCart(props) {
 							fullWidth 
 							onClick={handleVoucherBtn}
 							style={{marginTop:"2rem"}}
+							disabled={props.vouchers.length===0}
 						>
 							Voucher
 						</Button>
