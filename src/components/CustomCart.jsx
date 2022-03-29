@@ -18,6 +18,7 @@ import DatePicker from 'react-mobile-datepicker';
 
 
 
+
 export default function CustomCart(props) {
 	const { state, dispatch } = useContext(MainContext);
 
@@ -55,6 +56,7 @@ export default function CustomCart(props) {
 	}
 	
 	const [sk,setSk] = useState(false)
+	
 	const [total,setTotal] = useState(0)
 	const [delivery_date,set_delivery_date] = useState({
 		time: new Date(),
@@ -172,6 +174,12 @@ export default function CustomCart(props) {
 		})
 		
 	} 
+
+	const handleVoucherBtn = () =>{
+		console.log('klik')
+		props.onVoucherClick()
+
+	}
 
 	useEffect(()=> {
 		props.OnHandleDeliveryDate(delivery_date)
@@ -293,8 +301,26 @@ export default function CustomCart(props) {
 							name="voucher"
 							onChange={handleCustomer}
 						/> */}
+						<Button variant="contained" 
+							fullWidth 
+							onClick={handleVoucherBtn}
+							style={{marginTop:"2rem"}}
+						>
+							Voucher
+						</Button>
 
-						<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
+						<TextField 
+							label="Voucher" 
+							fullWidth 
+							style={{marginTop:"1rem",marginBottom:"1rem"}}
+							value={props.voucher_selected}
+							name="msisdn"
+							onChange={handleVoucher}
+						/>
+
+						
+						
+						{/* <FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
 							<InputLabel id="demo-simple-select-standard-label">Voucher</InputLabel>
 							<Select
 								label="Voucher"
@@ -322,7 +348,7 @@ export default function CustomCart(props) {
 								}
 
 							</Select>
-						</FormControl>
+						</FormControl> */}
 
 						<FormControl variant="standard" fullWidth style={{marginBottom:"1rem"}}>
 							<InputLabel id="demo-simple-select-standard-label">Metode Pembayaran</InputLabel>
@@ -410,6 +436,8 @@ export default function CustomCart(props) {
 						<FormControlLabel control={<Checkbox  checked={sk} onClick={handleSK} disabled={props.delivery_date.isOpen} />} label="Saya setuju" />
 					</FormGroup>
 				</div>
+
+				
 			</React.Fragment>
 
 

@@ -7,11 +7,12 @@ import {ApiReq} from "../components/ApiServer"
 import Payment from '../components/Payment';
 import Midtrans from '../components/Midtrans' 
 import CustomCart from '../components/CustomCart';
+
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 
-
+import Vouchers from '../components/Vouchers';
 
 // import AdapterDateFns from '@mui/lab/AdapterDateFns';
 // import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -25,7 +26,7 @@ export default function Cart() {
 	const { state, dispatch } = useContext(MainContext);
 	const [carts,setCart] = useState(InitCart())
 	const [total,setTotal] = useState(0)
-	
+	const [openVoucher,setOpenVoucher] = useState(false)
 	
 	const [customer, setCustomer] = useState({
 		name: "",
@@ -39,6 +40,7 @@ export default function Cart() {
 	const [token,setToken] = useState(null)
 	const [trxData,setTrxData] = useState()
 	const [itemData,setItemdata] = useState([])
+	
 
 	const [ms_payment,set_ms_payment] = useState([{
 		ms_payment_id: 4,
@@ -129,7 +131,7 @@ export default function Cart() {
 
 		const vresponse = await ApiReq(vparams)
 		if(vresponse.success){
-			// console.log("voucher",vresponse.data)
+			console.log("voucher",vresponse.data)
 			setVoucher(vresponse.data.filter(x=>x.voucher_stock_quantity>0))
 		}
 
@@ -344,6 +346,20 @@ export default function Cart() {
 		setOpenAlert(false);
 	};
 
+
+	const handleOnVoucherClick = () =>{
+		setOpenVoucher(true)
+	}
+
+	const handleVoucherClose = () => {
+		setOpenVoucher(false)
+	}
+
+	const handleOnSelectedVoucher = (v) => {
+		set_voucher_selected(v)
+		setOpenVoucher(false)
+	}
+
 	return (
 		
 		<React.Fragment>
@@ -394,6 +410,7 @@ export default function Cart() {
 					OnHandlePay={handlePay}
 					total={total}
 					OnHandleDeliveryDate={(value)=>set_delivery_date(value)}
+					onVoucherClick = {(e)=>handleOnVoucherClick(e)}
 					
 				/>
 			)}
@@ -416,6 +433,7 @@ export default function Cart() {
 				date_pickup={date_pickup}
 				onPayment={(token)=>handleOnPayment(token)}
 				
+				
 			/>
 			
 			<Snackbar open={openAlert} autoHideDuration={3000} onClose={handleClose}>
@@ -423,6 +441,14 @@ export default function Cart() {
 					{alertMessage}
 				</Alert>
 			</Snackbar>
+
+			<Vouchers
+				open={openVoucher}
+				vouchers = {vouchers}
+				onClose = {handleVoucherClose}
+				onSelectedVoucher = {(v) => handleOnSelectedVoucher(v)}
+				
+			/>
 		</React.Fragment>
 	)
 }
