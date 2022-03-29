@@ -74,7 +74,7 @@ const reducer = (state, action) => {
 				badge: cbadge,
 			};
 		case "PROFILE":
-			console.log(action)
+			// console.log(action)
 			return {
 				...state,
 				profile: {
@@ -164,7 +164,7 @@ export default function App() {
 	}, [])
 
 	useEffect(() => {
-		console.log('state',state)	
+		// console.log('state',state)	
 	}, [state])
 
 	

@@ -176,7 +176,6 @@ export default function CustomCart(props) {
 	} 
 
 	const handleVoucherBtn = () =>{
-		console.log('klik')
 		props.onVoucherClick()
 
 	}

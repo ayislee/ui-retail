@@ -131,7 +131,7 @@ export default function Cart() {
 
 		const vresponse = await ApiReq(vparams)
 		if(vresponse.success){
-			console.log("voucher",vresponse.data)
+			// console.log("voucher",vresponse.data)
 			setVoucher(vresponse.data.filter(x=>x.voucher_stock_quantity>0))
 		}
 
@@ -142,7 +142,7 @@ export default function Cart() {
 			}
 		});
 
-		console.log('retail_data',retail_data)
+		// console.log('retail_data',retail_data)
 		dispatch({
 			type: "PROFILE",
 			payload: {
