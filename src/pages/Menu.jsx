@@ -78,7 +78,8 @@ export default function Menu() {
 					logo: response.data.store.store_logo,
 					company: response.data.store.company.company_name,
 					store: response.data.store.store_name,
-					address: response.data.store.store_address	
+					address: response.data.store.store_address,	
+					store_operation_time_information: response.data.store.store_operation_time_information
 				},
 			});
 

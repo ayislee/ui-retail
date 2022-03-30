@@ -35,6 +35,7 @@ export default function Company() {
 				outlet_logo: response.data.store.store_logo,
 				outlet_name: response.data.store.store_name,
 				outlet_address: response.data.store.store_address,
+				store_operation_time_information: response.data.store.store_operation_time_information
 			}
 
 			console.log("retail_data",retail_data)

@@ -40,14 +40,14 @@ export default function CustomCart(props) {
 		// },
 		'hour': {
 			format: 'hh',
-			caption: 'Hour',
+			caption: 'Jam',
 			step: 1,
 		},
-		'minute': {
-			format: 'mm',
-			caption: 'Min',
-			step: 1,
-		},
+		// 'minute': {
+		// 	format: 'mm',
+		// 	caption: 'Min',
+		// 	step: 30,
+		// },
 		// 'second': {
 		// 	format: 'hh',
 		// 	caption: 'Sec',
@@ -416,6 +416,7 @@ export default function CustomCart(props) {
 							onCancel={handleCancelPicker} 
 							confirmText={'Ok'}
 							cancelText = {'Batal'}
+							headerFormat={'DD/MM/YYYY'}
 
 						/>
 

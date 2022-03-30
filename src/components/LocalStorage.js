@@ -16,7 +16,8 @@ export function RetailData() {
 			outlet: '',
 			outlet_logo: '',
 			outlet_name: '',
-			outlet_address: ''
+			outlet_address: '',
+			store_operation_time_information: []
 		}
 		ls.set("retail_data", JSON.stringify(retail_data));
 		saved = ls.get("retail_data") 
@@ -46,7 +47,8 @@ export function InitRetailData(data=null) {
 				outlet: '',
 				outlet_logo: '',
 				outlet_name: '',
-				outlet_address: ''
+				outlet_address: '',
+				store_operation_time_information: []
 				
 				
 			}

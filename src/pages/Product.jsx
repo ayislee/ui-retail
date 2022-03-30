@@ -142,7 +142,7 @@ export default function Product() {
 						<div className="item-sub-title">{product.store.store_name}</div>
 						<div className="item-full-desc-sub">{product.store.store_address}</div>
 						<div className="item-link">
-							<a href={`https://www.google.com/maps/@${product.store.store_coordinate}`}
+							<a href={`https://www.google.com/maps/search/?api=1&query=${product.store.store_coordinate}`}
 							className="btn"
 							target="_blank"
 						>

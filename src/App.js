@@ -8,7 +8,9 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import LiquorIcon from '@mui/icons-material/Liquor';
 import Badge from '@mui/material/Badge';
-import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import {storeOpen} from './components/Libraries'
+import {RetailData} from './components/LocalStorage';
 
 import { 
 	Button, 
@@ -75,13 +77,15 @@ const reducer = (state, action) => {
 			};
 		case "PROFILE":
 			// console.log(action)
+			
 			return {
 				...state,
 				profile: {
 					logo: action.payload.logo,
 					company: action.payload.company,
 					store: action.payload.store,
-					address: action.payload.address
+					address: action.payload.address,
+					store_operation_time_information: action.payload.store_operation_time_information
 				}
 								
 			}
@@ -161,6 +165,25 @@ export default function App() {
 	useEffect(() => {
 		// console.log('cart',cart)
 		// console.log('state.badge',state.badge)
+		const retail_data = RetailData()
+		console.log('reatail_data9999', retail_data)
+		dispatch({
+			type: "PROFILE",
+			payload: {
+				logo: retail_data.outlet_logo,
+				company: retail_data.company_name,
+				store: retail_data.outlet_name,
+				address: retail_data.outlet_address,	
+				store_operation_time_information: retail_data?.store_operation_time_information
+			},
+		});
+
+		dispatch({
+			type: "TITLE",
+			payload: {
+				title: "BERANDA"
+			}
+		});
 	}, [])
 
 	useEffect(() => {
@@ -262,6 +285,7 @@ export default function App() {
 						<div className="profile-name-container">
 							<div className="profile-company">{state?.profile?.store}</div>
 							<div className="profile-address">{state?.profile?.address}</div>
+							<div className="profile-address">buka: {storeOpen(state?.profile?.store_operation_time_information)?.start_time} - {storeOpen(state?.profile?.store_operation_time_information)?.end_time}</div>
 						</div>
 					
 					</div>
