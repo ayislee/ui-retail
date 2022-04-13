@@ -10,7 +10,12 @@ import LiquorIcon from '@mui/icons-material/Liquor';
 import Badge from '@mui/material/Badge';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import {storeOpen} from './components/Libraries'
-import {RetailData} from './components/LocalStorage';
+import {RetailData,InitAds} from './components/LocalStorage';
+import {Api} from './components/Api';
+import {ApiReq} from './components/ApiServer'
+
+import Banner from './components/Banner'
+
 
 import { 
 	Button, 
@@ -47,6 +52,7 @@ export const MainContext = createContext();
 const initialState = {
 	badge: GetBadge(),
 	outlet_slack: '',
+	banner: []
 };  
 
 
@@ -94,6 +100,17 @@ const reducer = (state, action) => {
 				...state,
 				title: action.payload.title
 			}
+		case "BANNER":
+			return {
+				...state,
+				banner: action.payload.banner
+				
+			}
+		case "SHOW BANNER": 
+			return {
+				...state,
+				show_banner: action.payload.show_banner
+			}
 		default:
 			return state;
 	}
@@ -135,11 +152,15 @@ export default function App() {
 		store: "",
 		address: ""
 	})
+
+	const [retail_data,set_retail_data] = useState(RetailData())
 	
 
    
 	
 	const [state, dispatch] = useReducer(reducer, initialState);
+
+
 
 	const toggleSlider = () => {
 		setOpen(!open);
@@ -162,11 +183,28 @@ export default function App() {
 		
 	},[hideOnScroll])
 	
+	const reloadAds = async () => {
+		const params2 = {
+			url: Api.ADS.url.replace(":store_slug",retail_data.outlet),
+			method: Api.ADS.method,
+			reqBody: retail_data
+		}
+
+		const response2 = await ApiReq(params2)
+		if(response2.success){
+			dispatch({
+				type: "BANNER",
+				payload : {
+					banner: response2.data
+				}
+			})
+		}
+	}
+
 	useEffect(() => {
 		// console.log('cart',cart)
 		// console.log('state.badge',state.badge)
-		const retail_data = RetailData()
-		console.log('reatail_data9999', retail_data)
+		// console.log('reatail_data9999', retail_data)
 		dispatch({
 			type: "PROFILE",
 			payload: {
@@ -184,10 +222,15 @@ export default function App() {
 				title: "BERANDA"
 			}
 		});
+
+		
+
+		reloadAds()
+
 	}, [])
 
 	useEffect(() => {
-		// console.log('state',state)	
+		console.log('state',state)	
 	}, [state])
 
 	
@@ -289,6 +332,18 @@ export default function App() {
 						</div>
 					
 					</div>
+					
+					{state?.show_banner?(
+						<Banner
+							dots={false}
+							infinite={true}
+							speed={500}
+							slidesToShow ={1}
+							slidesToScroll={1}
+							data={state?.banner}
+						/>
+					):(``)}
+					
 					<Drawer open={open} anchor="right" variant="persistent" onClose={toggleSlider} >
 						{sideList()}
 					</Drawer>

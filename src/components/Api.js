@@ -34,6 +34,10 @@ export const Api = {
 	PRODUCT: {
 		url: "/menu/slug/:menu_slug",
 		method: "get"
+	},
+	ADS: {
+		url: "/store/slug/:store_slug/ads",
+		method: "get"
 	}
 
 	

@@ -7,36 +7,23 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
+
 import AppsIcon from '@mui/icons-material/Apps';
 
-import {RetailData,InitCart,UpdateCart,ClearCart,InitMenu} from '../components/LocalStorage'
-import axios from 'axios'
+import {RetailData,InitCart,UpdateCart,InitMenu} from '../components/LocalStorage'
+
 import {Api} from '../components/Api'
 import {ApiReq} from '../components/ApiServer'
 import { MainContext } from "../App";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-import Dialog from '@mui/material/Dialog';
+
 import Slide from '@mui/material/Slide';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 
 
-
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction="up" ref={ref} {...props} />;
-});
+import OnlineShop from'../components/online-shop.png';
+import {Categories, Categories as Marketplace}  from '../components/Categories'
 
 export default function Menu() {
 	const { state, dispatch } = useContext(MainContext);
@@ -50,6 +37,10 @@ export default function Menu() {
 	const [dataMenu,setDataMenu] = useState()
 	const [openAlert,setOpenAlert] = useState(false)
 	const [openCategories, setOpenCategories] = useState(false);
+	const [ads,setAds] = useState([])
+
+	const [openMarketplace,setOpenMarketplace] = useState(false)
+	const [marketplaces,setMarketPlace] = useState([])
 
   	const handleChange = (event, newValue) => {
     	setValue(newValue);
@@ -90,6 +81,31 @@ export default function Menu() {
 				}
 			});
 			
+		}
+
+		const params2 = {
+			url: Api.ADS.url.replace(":store_slug",retail_data.outlet),
+			method: Api.ADS.method,
+			reqBody: retail_data
+		}
+
+		const response2 = await ApiReq(params2)
+		if(response2.success){
+			setAds(response2.data)
+			dispatch({
+				type: "BANNER",
+				payload : {
+					banner: response2.data
+				}
+			})
+
+			dispatch({
+				type: "SHOW BANNER",
+				payload : {
+					show_banner: true
+				}
+			})
+		
 		}
 		
 	}
@@ -209,17 +225,34 @@ export default function Menu() {
 									):""}
 								</div>
 								{/* <div className="item-stock">Jumlah stok: {product.menu_current_quantity}</div> */}
-								<Button 
-									variant="contained" 
-									size="small" 
-									startIcon={<AddShoppingCartIcon />}
-									// fullWidth
-									sx={{marginBottom:"10px !important"}}
-									onClick={() =>handleAddCart(product)}
-									disabled={product.menu_current_quantity==0}
-								>
-									Masuk Keranjang
-								</Button>
+								
+								
+								<div>
+									<Button 
+										variant="contained" 
+										size="small" 
+										// startIcon={<AddShoppingCartIcon />}
+										// fullWidth
+										sx={{marginBottom:"10px !important;",paddingTop: "10px",paddingBottom: "10px"}}
+										onClick={() =>handleAddCart(product)}
+										disabled={product.menu_current_quantity==0}
+									>
+										<AddShoppingCartIcon />
+									</Button>
+									
+									<Button 
+										variant="contained" 
+										size="small" 
+										// startIcon={<AddShoppingCartIcon />}
+										// fullWidth
+										sx={{marginBottom:"10px !important;",paddingTop: "10px",paddingBottom: "10px",marginLeft: "10px"}}
+										onClick={() =>handleAddCart(product)}
+										disabled={product.menu_platform.length==0}
+									>
+										<img  src={OnlineShop}  className="iconinvert" />
+									</Button>
+								</div>
+								
 								
 							</div>
 							<Link to={`/product/${product.menu_slug}`}>
@@ -247,8 +280,8 @@ export default function Menu() {
 				variant="contained"
 				style={{
 					position: "fixed",
-					bottom: 20,
-  					right: 20,
+					bottom: 40,
+  					right: 40,
 					borderRadius: "50%",
 					paddingTop: "20px",
 					paddingBottom: "20px",
@@ -267,47 +300,20 @@ export default function Menu() {
 				</Alert>
 			</Snackbar>
 
-			<Dialog
-				// fullScreen
+
+			<Categories
 				open={openCategories}
 				onClose={handleCloseCategories}
-				TransitionComponent={Transition}
-				fullWidth
-      		>
-				<AppBar sx={{ position: 'relative' }}>
-          			<Toolbar>
-						<IconButton
-							edge="start"
-							color="inherit"
-							onClick={handleCloseCategories}
-							aria-label="close"
-						>
-              				<CloseIcon />
-            			</IconButton>
-            			<Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              				Kategori 
-            			</Typography>
-            			
-          			</Toolbar>
-        		</AppBar>
+				data={categories}
+				onClick={(index)=>handleSelectCategory(index)}
+			/>
 
-				<List>
-					{categories.map((category,index)=>(
-						<React.Fragment key={index}>
-
-						
-							<ListItem button>
-								<ListItemText primary={category} onClick={()=>handleSelectCategory(index)}/>
-							</ListItem>
-							<Divider />
-						  </React.Fragment>
-					))}
-          			
-          			
-          			
-        		</List>
-				  
-			</Dialog>
+			{/* <Marketplace
+				open={openMarketplace}
+				onClose={handleCloseMarketPlace}
+				data={marketplaces}
+				
+			/> */}
 
 		</Box>
 	)

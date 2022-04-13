@@ -39,6 +39,13 @@ export default function Outlet() {
 		});
 
 		dispatch({
+			type: "SHOW BANNER",
+			payload: {
+				show_banner: false
+			}
+		});
+
+		dispatch({
 			type: "PROFILE",
 			payload: {
 				logo: retail_data.outlet_logo,

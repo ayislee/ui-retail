@@ -166,3 +166,20 @@ export function InitCustomer(data=null) {
 	return JSON.parse(dt) 
 }
 
+export function InitAds(data=null) {
+	let dt
+	if(data !== null){
+		ls.set("ads",JSON.stringify(data))
+		dt = ls.get("ads")
+	}else{
+		const d = ls.get("ads")
+		if(d){
+			dt = d
+		}else{
+			ls.set("ads",[])
+			dt = ls.get("ads")
+		}
+	}
+	return JSON.parse(dt)
+}
+

@@ -50,6 +50,13 @@ export default function HistoryDetail() {
 				address: retail_data.outlet_address	
 			},
 		})
+
+		dispatch({
+			type: "SHOW BANNER",
+			payload: {
+				show_banner: false
+			}
+		});
 		reloadData()
 	},[])
 

@@ -162,6 +162,12 @@ export default function Cart() {
 		if(carts.length == 0){
 			window.location.href="/menus"
 		}
+		dispatch({
+			type: "SHOW BANNER",
+			payload: {
+				show_banner: false
+			}
+		});
 		reloadData()
 		
 	},[])

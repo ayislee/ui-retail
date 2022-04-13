@@ -14,7 +14,7 @@ code {
 
 
 .body-content { 
-	max-width: 600px;
+	max-width: 500px;
   	margin: auto;
   	background: white;
 }  
@@ -449,4 +449,9 @@ code {
 
 .product-name {
 	font-weight: bold;
+}
+
+.iconinvert{
+	width: 24px;
+	filter: invert(100%)
 }

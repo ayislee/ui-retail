@@ -132,10 +132,10 @@ export default function Product() {
 						{product.item_name}
 					</div>
 					<div className="label-info">
-						{product.item_sku}
+						
 					</div>
 					<div className="item-full-desc">
-						{product.item_description}
+						<div dangerouslySetInnerHTML={{__html: product.item_description}} /> 
 					</div>
 					<div className="store-container">
 						<div className="label-title">Toko</div>
