@@ -12,6 +12,22 @@ import Alert from '@mui/material/Alert';
 
 import { MainContext } from "../App";
 
+import {
+	FacebookShareButton,
+	LineShareButton,
+	TwitterShareButton,
+	WhatsappShareButton,
+  } from "react-share";
+
+
+
+import {
+	FacebookIcon,
+	LineIcon,
+	TwitterIcon,
+	WhatsappIcon,
+  } from "react-share";
+
 export default function Product() {
 	const { state, dispatch } = useContext(MainContext);
 	const {product_slug} = useParams()
@@ -137,6 +153,33 @@ export default function Product() {
 					<div className="item-full-desc">
 						<div dangerouslySetInnerHTML={{__html: product.item_description}} /> 
 					</div>
+					<div className="label-info">
+						<FacebookShareButton
+							url={window.location.href}
+						>
+							<FacebookIcon size={32} round={true} />
+						</FacebookShareButton>
+
+						<TwitterShareButton
+							url={window.location.href}
+						>
+							<TwitterIcon size={32} round={true} />
+						</TwitterShareButton>
+
+						<WhatsappShareButton
+							url={window.location.href}
+						>
+							<WhatsappIcon size={32} round={true} />
+						</WhatsappShareButton>
+						
+						<LineShareButton
+							url={window.location.href}
+						>
+							<LineIcon size={32} round={true} />
+						</LineShareButton>
+						
+					</div>
+
 					<div className="store-container">
 						<div className="label-title">Toko</div>
 						<div className="item-sub-title">{product.store.store_name}</div>

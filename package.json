@@ -23,6 +23,7 @@
     "react-onsenui": "^1.11.5",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-share": "^4.4.0",
     "react-slick": "^0.28.1",
     "secure-ls": "^1.2.6",
     "web-vitals": "^2.1.4"
