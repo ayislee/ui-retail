@@ -24,7 +24,7 @@ export default function History() {
 		}
 
 		const response = await ApiReq(params)
-        console.log("response",response)
+        // console.log("response",response)
 		if(response.success){
 			setHistory(response.data)
 			setLastPage(response.data.last_page)
@@ -42,7 +42,7 @@ export default function History() {
 			}
 		});
 
-		console.log("retail_data",retail_data)
+		// console.log("retail_data",retail_data)
 		dispatch({
 			type: "PROFILE",
 			payload: {

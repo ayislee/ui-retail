@@ -23,7 +23,8 @@ import Slide from '@mui/material/Slide';
 
 
 import OnlineShop from'../components/online-shop.png';
-import {Categories, Categories as Marketplace}  from '../components/Categories'
+import {Categories}  from '../components/Categories'
+import {Marketplace}  from '../components/Marketplace'
 
 export default function Menu() {
 	const { state, dispatch } = useContext(MainContext);
@@ -124,7 +125,7 @@ export default function Menu() {
 	},[menu])
 
 	useEffect(() => {
-		console.log('categories',categories)
+		// console.log('categories',categories)
 		if(categories.length > 0 ){
 			setProduct(menu[categories[value]])
 		}
@@ -186,11 +187,29 @@ export default function Menu() {
 		setOpenCategories(false)
 	}
 
+	const handleCloseMarketPlace = () => {
+		setOpenMarketplace(false)
+	}
+
 	const handleSelectCategory = (value) => {
-		console.log('category',value)
+		// console.log('category',value)
 		setValue(value);
 		setOpenCategories(false)
 	}
+
+	const handleOpenMarketplace = (p) => {
+		// console.log(p.menu_platform)
+		setMarketPlace(p.menu_platform)
+		setOpenMarketplace(true)
+		
+	}
+
+	const handleSelectMarketplace = (value) => {
+		// console.log(value)
+		setOpenMarketplace(false)
+		window.open(marketplaces[value].menu_platform_link, '_blank')
+	}
+
 	return (
 
 		<Box sx={{ bgcolor: 'background.paper' }}>
@@ -246,7 +265,7 @@ export default function Menu() {
 										// startIcon={<AddShoppingCartIcon />}
 										// fullWidth
 										sx={{marginBottom:"10px !important;",paddingTop: "10px",paddingBottom: "10px",marginLeft: "10px"}}
-										onClick={() =>handleAddCart(product)}
+										onClick={() =>handleOpenMarketplace(product)}
 										disabled={product.menu_platform.length==0}
 									>
 										<img  src={OnlineShop}  className="iconinvert" />
@@ -306,14 +325,17 @@ export default function Menu() {
 				onClose={handleCloseCategories}
 				data={categories}
 				onClick={(index)=>handleSelectCategory(index)}
+				title={`Kategori`}
 			/>
 
-			{/* <Marketplace
+			<Marketplace
 				open={openMarketplace}
 				onClose={handleCloseMarketPlace}
 				data={marketplaces}
+				onClick={(index)=>handleSelectMarketplace(index)}
+				title={`Marketplace`}
 				
-			/> */}
+			/>
 
 		</Box>
 	)

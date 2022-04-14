@@ -117,17 +117,17 @@ export function InitHistory(data=null) {
 	let saved 
 	let dt
 	let old_data
-	console.log("data",data)
+	// console.log("data",data)
 	if(data !== null){
 		dt = ls.get("history_data")
 		if(!dt){
-			console.log("tidak ada data")
+			// console.log("tidak ada data")
 			ls.set("history_data",JSON.stringify([]))
 			dt = ls.get("history_data")
 		}
 		
 		old_data = JSON.parse(dt)
-		console.log("old_data",old_data)
+		// console.log("old_data",old_data)
 		old_data.unshift(data)
 		saved = old_data
 

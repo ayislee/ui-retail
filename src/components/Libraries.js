@@ -1,5 +1,5 @@
 export function storeOpen(store_operation_time_information){
-	console.log('store_operation_time_information',store_operation_time_information)
+	// console.log('store_operation_time_information',store_operation_time_information)
 	if(!store_operation_time_information){
 		return {
 			status : "open",
@@ -12,7 +12,7 @@ export function storeOpen(store_operation_time_information){
 	const d = new Date();
 	let day = weekday[d.getDay()];
 	let today = store_operation_time_information.find(e => e.weekday == day)
-	console.log('today',today)
+	// console.log('today',today)
 	return today
 
 }

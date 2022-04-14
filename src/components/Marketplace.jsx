@@ -16,8 +16,50 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Marketplace() {
-  	return (
-		<div>Marketplace</div>
-  	)
-}
+export function Marketplace(props) {
+	return (
+		
+		<Dialog
+			// fullScreen
+			open={props.open}
+			onClose={()=>props.onClose()}
+			TransitionComponent={Transition}
+			fullWidth
+		>
+			<AppBar sx={{ position: 'relative' }}>
+				<Toolbar>
+					<IconButton
+						edge="start"
+						color="inherit"
+						onClick={()=>props.onClose()}
+						aria-label="close"
+					>
+						<CloseIcon />
+					</IconButton>
+					<Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+						{props.title} 
+					</Typography>
+					
+				</Toolbar>
+			</AppBar>
+
+			<List>
+				{props.data.map((marketpace,index)=>(
+					<React.Fragment key={index}>
+
+					
+						<ListItem button>
+							<ListItemText primary={marketpace.ms_merchant_payment?.ms_merchant_payment_name} onClick={()=>props.onClick(index)}/>
+						</ListItem>
+						<Divider />
+						</React.Fragment>
+				))}
+				
+				
+				
+			</List>
+				
+		</Dialog>
+
+		)
+	}

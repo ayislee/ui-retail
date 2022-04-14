@@ -31,7 +31,7 @@ export default function Product() {
 		if(response.success){
 			
 			if(response.success){
-				console.log('response.data',response.data)
+				// console.log('response.data',response.data)
 				set_product(response.data)
 				let img = []
 				for (const i of response.data.item_image) {
@@ -80,13 +80,13 @@ export default function Product() {
 				address: retail_data.outlet_address	
 			},
 		})
-		console.log('product_slug',product_slug)
+		// console.log('product_slug',product_slug)
 		reloadData()
 	},[])
 
 	const handleAddCart = (p) => {
 		var lastCart = InitCart()
-		console.log('lastCart1',lastCart)
+		// console.log('lastCart1',lastCart)
 		const indexItem = lastCart.findIndex(x => x.item_id == p.item_id)
 		if(indexItem>=0){
 			lastCart[indexItem].quantity++
@@ -98,7 +98,7 @@ export default function Product() {
 
 		lastCart = UpdateCart(lastCart)
 
-		console.log('lastCart2',lastCart)
+		// console.log('lastCart2',lastCart)
 
 		dispatch({
 			type: "BADGE",
