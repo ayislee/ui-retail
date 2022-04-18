@@ -21,11 +21,7 @@ export function RetailData() {
 			store_operation_time_information: []
 		}
 		ls.set("retail_data", JSON.stringify(retail_data));
-		
-		saved = ls.get("retail_data") 
-		storage = JSON.parse(saved);
-		// console.log('retaildata2',saved)
-		return storage
+		return retail_data
 	}
 	
 
