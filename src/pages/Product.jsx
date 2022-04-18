@@ -70,6 +70,16 @@ export default function Product() {
 				})
 
 				set_product_images(img)
+
+				dispatch({
+					type: "PROFILE",
+					payload: {
+						logo: response.data.store.store_logo,
+						company: response.data.store.company.company_name,
+						store: response.data.store.company.company_name,
+						address: response.data.store.store_address	
+					},
+				})
 				
 			}else{
 				window.location.href="/menus"
@@ -87,16 +97,16 @@ export default function Product() {
 			}
 		});
 
-		dispatch({
-			type: "PROFILE",
-			payload: {
-				logo: retail_data.outlet_logo,
-				company: retail_data.company_name,
-				store: retail_data.outlet_name,
-				address: retail_data.outlet_address	
-			},
-		})
-		console.log('product_slug',product_slug)
+		// dispatch({
+		// 	type: "PROFILE",
+		// 	payload: {
+		// 		logo: retail_data.outlet_logo,
+		// 		company: retail_data.company_name,
+		// 		store: retail_data.outlet_name,
+		// 		address: retail_data.outlet_address	
+		// 	},
+		// })
+		// console.log('product_slug',product_slug)
 		reloadData()
 	},[])
 
