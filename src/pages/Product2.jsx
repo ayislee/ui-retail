@@ -116,10 +116,10 @@ export default function Product() {
 
 		// console.log('lastCart2',lastCart)
 
-		dispatch({
-			type: "BADGE",
-			payload: lastCart,
-		});
+		// dispatch({
+		// 	type: "BADGE",
+		// 	payload: lastCart,
+		// });
 
 		setOpenAlert(true);
 	}

@@ -153,11 +153,7 @@ export default function App() {
 		address: ""
 	})
 
-	const [retail_data,set_retail_data] = useState(RetailData())
-	
-
-   
-	
+	const [retail_data,set_retail_data] = useState(null)
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 
@@ -184,35 +180,39 @@ export default function App() {
 	},[hideOnScroll])
 	
 	const reloadAds = async () => {
-		const params2 = {
-			url: Api.ADS.url.replace(":store_slug",retail_data.outlet),
-			method: Api.ADS.method,
-			reqBody: retail_data
-		}
 
-		const response2 = await ApiReq(params2)
-		if(response2.success){
-			dispatch({
-				type: "BANNER",
-				payload : {
-					banner: response2.data
-				}
-			})
+		const RD = RetailData()
+		if(RD.outlet !== ''){
+			const params2 = {
+				url: Api.ADS.url.replace(":store_slug",RD.outlet),
+				method: Api.ADS.method,
+				reqBody: RD
+			}
+	
+			const response2 = await ApiReq(params2)
+			if(response2.success){
+				dispatch({
+					type: "BANNER",
+					payload : {
+						banner: response2.data
+					}
+				})
+			}
 		}
+		
 	}
 
 	useEffect(() => {
-		// console.log('cart',cart)
-		// console.log('state.badge',state.badge)
-		// console.log('reatail_data9999', retail_data)
+		set_retail_data(RetailData())
+		const RD = RetailData()
 		dispatch({
 			type: "PROFILE",
 			payload: {
-				logo: retail_data.outlet_logo,
-				company: retail_data.company_name,
-				store: retail_data.outlet_name,
-				address: retail_data.outlet_address,	
-				store_operation_time_information: retail_data?.store_operation_time_information
+				logo: RD.outlet_logo,
+				company: RD.company_name,
+				store: RD.outlet_name,
+				address: RD.outlet_address,	
+				store_operation_time_information: RD?.store_operation_time_information
 			},
 		});
 
@@ -285,7 +285,7 @@ export default function App() {
 
 							<div>
 								{
-								state.badge>0?(
+								state?.badge>0?(
 										<Link to={"/cart"} style={{ textDecoration: 'none',color:"white" }}>
 										<IconButton
 											size="large"

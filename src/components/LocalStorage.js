@@ -4,9 +4,10 @@ var ls = new SecureLS({ encodingType: 'aes' })
 export function RetailData() {
 	// const saved = localStorage.getItem("authUser");
 	const saved = ls.get("retail_data")
-	
+	let storage
 	if(saved){
-		
+		// console.log('retaildata1',JSON.parse(saved))
+		return JSON.parse(saved)
 	}else{
 		const retail_data = {
 			company_id: '',
@@ -20,22 +21,27 @@ export function RetailData() {
 			store_operation_time_information: []
 		}
 		ls.set("retail_data", JSON.stringify(retail_data));
+		
 		saved = ls.get("retail_data") 
+		storage = JSON.parse(saved);
+		// console.log('retaildata2',saved)
+		return storage
 	}
-	const storage = JSON.parse(saved);
+	
+
+	
 
 
 
-	return storage
+	
 }
 
 export function InitRetailData(data=null) {
 	let saved
 	if(data !== null){
 		ls.set("retail_data", JSON.stringify(data))
-		saved = ls.get("retail_data")
-		return JSON.parse(saved);
-	
+		
+		return data
 	}else{
 		const d  = ls.get("retail_data")
 		if(d){
@@ -60,15 +66,19 @@ export function InitRetailData(data=null) {
 }
 
 export function InitCart() {
+	let storage
 	let data = ls.get("cart_data")
 	if(!data){
+		// console.log('InitCart1',data)
 		const cart = []
 		ls.set("cart_data", JSON.stringify(cart))
-		data = ls.get("cart_data")
+		return cart
+	}else{
+		// console.log('InitCart2',data)
+		storage = JSON.parse(data);
+		return storage
 	}
-	const storage = JSON.parse(data);	
 
-	return storage
 
 }
 
@@ -108,8 +118,15 @@ export function InitMenu(data=null) {
 		return JSON.parse(saved);
 	
 	}else{
-		saved = ls.get("menu_data")
-		return JSON.parse(saved);
+		
+		saved = ls.get("menu_data");
+		if(saved){
+			return JSON.parse(saved);
+		}else{
+			return JSON.parse(null);
+		}
+		
+		
 	}
 }
 
