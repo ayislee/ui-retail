@@ -100,17 +100,17 @@ export default function Cart() {
 	
 
 	const reloadData = async () => {
-		const params = {
-			url: Api.MS_PAYMENT.url,
-			method: Api.MS_PAYMENT.method,
-		}
+		// const params = {
+		// 	url: Api.MS_PAYMENT.url,
+		// 	method: Api.MS_PAYMENT.method,
+		// }
 
-		const response = await ApiReq(params)
-		if(response.success){
-			// console.log("ms_payment",response.data)
-			const p = ['MIDTRANS','MERCHANT_PAYMENT']
-			set_ms_payment(response.data.filter(x=> p?.includes(x.ms_payment_identifier)))
-		}
+		// const response = await ApiReq(params)
+		// if(response.success){
+		// 	// console.log("ms_payment",response.data)
+		// 	const p = ['MIDTRANS','MERCHANT_PAYMENT']
+		// 	set_ms_payment(response.data.filter(x=> p?.includes(x.ms_payment_identifier)))
+		// }
 
 		const dparams = {
 			url: Api.MS_DELIVERY.url,
@@ -186,7 +186,9 @@ export default function Cart() {
 	},[carts])
 
 	useEffect(()=>{
-		// console.log("menu",menu)
+		console.log("menu",menu)
+		const p = ['MIDTRANS','MERCHANT_PAYMENT']
+		set_ms_payment(menu?.store?.store_payment_method_information?.filter(x=> p?.includes(x.ms_payment_identifier)))
 	},[menu])
 	
 	
