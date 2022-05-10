@@ -177,7 +177,7 @@ export default function Cart() {
 	},[total])
 
 	useEffect(()=>{
-		// console.log('ms_payment',ms_payment)
+		console.log('ms_payment',ms_payment)
 	},[ms_payment])
 	
 	useEffect(()=>{

@@ -136,7 +136,7 @@ export default function Payment(props) {
 				<div className="total-payment">
 					<div className="total-payment-label">Metoda Pembayaran</div>
 					<div className="total-payment-value">
-						{props.ms_payment.ms_payment_name}
+						{props.ms_payment?.ms_payment_name}
 					</div>
 				</div>
 
@@ -161,7 +161,7 @@ export default function Payment(props) {
 					</div>
 				</div>
 
-				{props.ms_payment.ms_payment_id != 4?(
+				{props.ms_payment?.ms_payment_id != 4?(
 					<div className="total-payment">
 					<div className="total-payment-label">Catatan</div>
 					<div className="total-payment-value">
